@@ -11,7 +11,6 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -27,11 +26,11 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralwidget;
-    QGridLayout *gridLayout;
     QHBoxLayout *horizontalLayout;
     QLabel *Input_Label;
     QLineEdit *Input_LineEdit;
     QPushButton *InputSearch_Button;
+    QPushButton *SelectFile_Button;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -42,9 +41,7 @@ public:
         MainWindow->resize(800, 600);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        gridLayout = new QGridLayout(centralwidget);
-        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
-        horizontalLayout = new QHBoxLayout();
+        horizontalLayout = new QHBoxLayout(centralwidget);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         Input_Label = new QLabel(centralwidget);
         Input_Label->setObjectName(QString::fromUtf8("Input_Label"));
@@ -58,11 +55,14 @@ public:
 
         InputSearch_Button = new QPushButton(centralwidget);
         InputSearch_Button->setObjectName(QString::fromUtf8("InputSearch_Button"));
+        InputSearch_Button->setMaximumSize(QSize(30, 16777215));
 
         horizontalLayout->addWidget(InputSearch_Button, 0, Qt::AlignTop);
 
+        SelectFile_Button = new QPushButton(centralwidget);
+        SelectFile_Button->setObjectName(QString::fromUtf8("SelectFile_Button"));
 
-        gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
+        horizontalLayout->addWidget(SelectFile_Button, 0, Qt::AlignTop);
 
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
@@ -86,6 +86,7 @@ public:
         Input_LineEdit->setText(QString());
         Input_LineEdit->setPlaceholderText(QCoreApplication::translate("MainWindow", "Example: C:/user/file.txt", nullptr));
         InputSearch_Button->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        SelectFile_Button->setText(QCoreApplication::translate("MainWindow", "Select File", nullptr));
     } // retranslateUi
 
 };
