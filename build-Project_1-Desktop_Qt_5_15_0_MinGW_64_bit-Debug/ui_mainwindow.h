@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -26,7 +27,7 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralwidget;
-    QWidget *widget;
+    QGridLayout *gridLayout;
     QHBoxLayout *horizontalLayout;
     QLabel *Input_Label;
     QLineEdit *Input_LineEdit;
@@ -41,26 +42,27 @@ public:
         MainWindow->resize(800, 600);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        widget = new QWidget(centralwidget);
-        widget->setObjectName(QString::fromUtf8("widget"));
-        widget->setGeometry(QRect(20, 10, 321, 25));
-        horizontalLayout = new QHBoxLayout(widget);
+        gridLayout = new QGridLayout(centralwidget);
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        Input_Label = new QLabel(widget);
+        Input_Label = new QLabel(centralwidget);
         Input_Label->setObjectName(QString::fromUtf8("Input_Label"));
 
-        horizontalLayout->addWidget(Input_Label);
+        horizontalLayout->addWidget(Input_Label, 0, Qt::AlignTop);
 
-        Input_LineEdit = new QLineEdit(widget);
+        Input_LineEdit = new QLineEdit(centralwidget);
         Input_LineEdit->setObjectName(QString::fromUtf8("Input_LineEdit"));
 
-        horizontalLayout->addWidget(Input_LineEdit);
+        horizontalLayout->addWidget(Input_LineEdit, 0, Qt::AlignTop);
 
-        InputSearch_Button = new QPushButton(widget);
+        InputSearch_Button = new QPushButton(centralwidget);
         InputSearch_Button->setObjectName(QString::fromUtf8("InputSearch_Button"));
 
-        horizontalLayout->addWidget(InputSearch_Button);
+        horizontalLayout->addWidget(InputSearch_Button, 0, Qt::AlignTop);
+
+
+        gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
 
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
