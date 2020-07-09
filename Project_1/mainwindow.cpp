@@ -35,6 +35,8 @@ void MainWindow::on_SelectFile_Button_clicked()
         else
         {
             QMessageBox::information(this, "Success", "File opened successfully");
+            QString confirmSelection = "Input File: " + inputFile;
+            ui->inputFile_Confirm->setText(confirmSelection);
         }
     }
     else
