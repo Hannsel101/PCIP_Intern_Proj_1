@@ -31,17 +31,17 @@ public:
     QWidget *centralwidget;
     QGridLayout *gridLayout;
     QPushButton *SelectFile_Button;
-    QLineEdit *lineEdit;
+    QLineEdit *output_LineEdit;
     QPushButton *SelectFile2_Button;
     QLineEdit *Input_LineEdit;
     QLabel *Input_Label;
     QPushButton *InputSearch_Button;
     QLabel *label;
-    QPushButton *OutputFile_Button;
+    QPushButton *OutputSearch_Button;
     QVBoxLayout *verticalLayout_2;
     QFrame *line;
     QLabel *inputFile_Confirm;
-    QLabel *label_3;
+    QLabel *outputFile_Confirm;
     QSpacerItem *verticalSpacer;
     QMenuBar *menubar;
     QStatusBar *statusbar;
@@ -62,10 +62,10 @@ public:
 
         gridLayout->addWidget(SelectFile_Button, 0, 3, 1, 1);
 
-        lineEdit = new QLineEdit(centralwidget);
-        lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
+        output_LineEdit = new QLineEdit(centralwidget);
+        output_LineEdit->setObjectName(QString::fromUtf8("output_LineEdit"));
 
-        gridLayout->addWidget(lineEdit, 1, 1, 1, 1);
+        gridLayout->addWidget(output_LineEdit, 1, 1, 1, 1);
 
         SelectFile2_Button = new QPushButton(centralwidget);
         SelectFile2_Button->setObjectName(QString::fromUtf8("SelectFile2_Button"));
@@ -93,11 +93,11 @@ public:
 
         gridLayout->addWidget(label, 1, 0, 1, 1);
 
-        OutputFile_Button = new QPushButton(centralwidget);
-        OutputFile_Button->setObjectName(QString::fromUtf8("OutputFile_Button"));
-        OutputFile_Button->setMaximumSize(QSize(30, 16777215));
+        OutputSearch_Button = new QPushButton(centralwidget);
+        OutputSearch_Button->setObjectName(QString::fromUtf8("OutputSearch_Button"));
+        OutputSearch_Button->setMaximumSize(QSize(30, 16777215));
 
-        gridLayout->addWidget(OutputFile_Button, 1, 2, 1, 1);
+        gridLayout->addWidget(OutputSearch_Button, 1, 2, 1, 1);
 
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
@@ -133,12 +133,12 @@ public:
 
         verticalLayout_2->addWidget(inputFile_Confirm);
 
-        label_3 = new QLabel(centralwidget);
-        label_3->setObjectName(QString::fromUtf8("label_3"));
-        label_3->setMinimumSize(QSize(0, 13));
-        label_3->setMaximumSize(QSize(16777215, 20));
+        outputFile_Confirm = new QLabel(centralwidget);
+        outputFile_Confirm->setObjectName(QString::fromUtf8("outputFile_Confirm"));
+        outputFile_Confirm->setMinimumSize(QSize(0, 13));
+        outputFile_Confirm->setMaximumSize(QSize(16777215, 20));
 
-        verticalLayout_2->addWidget(label_3, 0, Qt::AlignTop);
+        verticalLayout_2->addWidget(outputFile_Confirm, 0, Qt::AlignTop);
 
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -165,7 +165,7 @@ public:
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
         SelectFile_Button->setText(QCoreApplication::translate("MainWindow", "Select File", nullptr));
-        lineEdit->setPlaceholderText(QCoreApplication::translate("MainWindow", "Example: C:/user/file.txt", nullptr));
+        output_LineEdit->setPlaceholderText(QCoreApplication::translate("MainWindow", "Example: C:/user/file.txt", nullptr));
         SelectFile2_Button->setText(QCoreApplication::translate("MainWindow", "Select File", nullptr));
         Input_LineEdit->setInputMask(QString());
         Input_LineEdit->setText(QString());
@@ -173,9 +173,9 @@ public:
         Input_Label->setText(QCoreApplication::translate("MainWindow", "Input File", nullptr));
         InputSearch_Button->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "Output File", nullptr));
-        OutputFile_Button->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        OutputSearch_Button->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         inputFile_Confirm->setText(QCoreApplication::translate("MainWindow", "Input File: ", nullptr));
-        label_3->setText(QCoreApplication::translate("MainWindow", "Output File:", nullptr));
+        outputFile_Confirm->setText(QCoreApplication::translate("MainWindow", "- No output file selected", nullptr));
     } // retranslateUi
 
 };
