@@ -31,11 +31,6 @@ public:
     QGridLayout *gridLayout;
     QVBoxLayout *verticalLayout_2;
     QPushButton *process_Button;
-    QSpacerItem *verticalSpacer_2;
-    QLabel *fileStatusHeader;
-    QLabel *inputFile_Confirm;
-    QLabel *outputFile_Confirm;
-    QLabel *logFile_Confirm;
     QSpacerItem *verticalSpacer_3;
     QLabel *processingInformationHeader;
     QLabel *recordsProcessed;
@@ -70,60 +65,17 @@ public:
 
         verticalLayout_2->addWidget(process_Button);
 
-        verticalSpacer_2 = new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Fixed);
-
-        verticalLayout_2->addItem(verticalSpacer_2);
-
-        fileStatusHeader = new QLabel(centralwidget);
-        fileStatusHeader->setObjectName(QString::fromUtf8("fileStatusHeader"));
-        QFont font;
-        font.setPointSize(12);
-        font.setBold(true);
-        font.setUnderline(true);
-        font.setWeight(75);
-        fileStatusHeader->setFont(font);
-        fileStatusHeader->setFrameShape(QFrame::NoFrame);
-        fileStatusHeader->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
-        fileStatusHeader->setIndent(100);
-
-        verticalLayout_2->addWidget(fileStatusHeader);
-
-        inputFile_Confirm = new QLabel(centralwidget);
-        inputFile_Confirm->setObjectName(QString::fromUtf8("inputFile_Confirm"));
-        inputFile_Confirm->setEnabled(true);
-        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(inputFile_Confirm->sizePolicy().hasHeightForWidth());
-        inputFile_Confirm->setSizePolicy(sizePolicy);
-        inputFile_Confirm->setMinimumSize(QSize(0, 13));
-        inputFile_Confirm->setMaximumSize(QSize(16777215, 20));
-        inputFile_Confirm->setFrameShape(QFrame::NoFrame);
-        inputFile_Confirm->setScaledContents(true);
-        inputFile_Confirm->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
-        inputFile_Confirm->setMargin(0);
-        inputFile_Confirm->setIndent(0);
-
-        verticalLayout_2->addWidget(inputFile_Confirm);
-
-        outputFile_Confirm = new QLabel(centralwidget);
-        outputFile_Confirm->setObjectName(QString::fromUtf8("outputFile_Confirm"));
-        outputFile_Confirm->setMinimumSize(QSize(0, 13));
-        outputFile_Confirm->setMaximumSize(QSize(16777215, 20));
-
-        verticalLayout_2->addWidget(outputFile_Confirm, 0, Qt::AlignTop);
-
-        logFile_Confirm = new QLabel(centralwidget);
-        logFile_Confirm->setObjectName(QString::fromUtf8("logFile_Confirm"));
-
-        verticalLayout_2->addWidget(logFile_Confirm);
-
         verticalSpacer_3 = new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         verticalLayout_2->addItem(verticalSpacer_3);
 
         processingInformationHeader = new QLabel(centralwidget);
         processingInformationHeader->setObjectName(QString::fromUtf8("processingInformationHeader"));
+        QFont font;
+        font.setPointSize(12);
+        font.setBold(true);
+        font.setUnderline(true);
+        font.setWeight(75);
         processingInformationHeader->setFont(font);
         processingInformationHeader->setIndent(100);
 
@@ -207,10 +159,6 @@ public:
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
         process_Button->setText(QCoreApplication::translate("MainWindow", "Start Processing", nullptr));
-        fileStatusHeader->setText(QCoreApplication::translate("MainWindow", "File Selection Status", nullptr));
-        inputFile_Confirm->setText(QCoreApplication::translate("MainWindow", "Input file status", nullptr));
-        outputFile_Confirm->setText(QCoreApplication::translate("MainWindow", "output file status", nullptr));
-        logFile_Confirm->setText(QCoreApplication::translate("MainWindow", "log file status", nullptr));
         processingInformationHeader->setText(QCoreApplication::translate("MainWindow", "Processing Information", nullptr));
         recordsProcessed->setText(QCoreApplication::translate("MainWindow", "Records Processed: 0", nullptr));
         log_Label->setText(QCoreApplication::translate("MainWindow", "Log File", nullptr));

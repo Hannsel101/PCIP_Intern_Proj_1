@@ -15,11 +15,6 @@ MainWindow::MainWindow(QWidget *parent)
     inputFile = nullptr;
     outputFile = nullptr;
     logFile = nullptr;
-
-    //Hide file selection status labels
-    ui->outputFile_Confirm->setText("");
-    ui->inputFile_Confirm->setText("");
-    ui->logFile_Confirm->setText("");
 }
 //-----------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------//
@@ -86,7 +81,6 @@ bool MainWindow::checkPermissions(QFile *file, int fileType)
         }
         else
         {
-            //file->open(QIODevice::WriteOnly);//Create a write only file
             return false;
         }
     }
@@ -115,16 +109,11 @@ void MainWindow::on_process_Button_clicked()
         inputFile = new QFile(inputFileName);
         if(!checkPermissions(inputFile, 0))
         {
-            QMessageBox::warning(this, "Permissions Error", "Input file not opened!");
-            ui->inputFile_Confirm->setText("Error: File does not have read permissions");
-            ui->inputFile_Confirm->setStyleSheet("QLabel { background-color:#96201a; color:white;}");
+            QMessageBox::warning(this, "Permissions Error", "Invalid input file!");
             ui->Input_LineEdit->setStyleSheet("border: 1px solid red");
         }
         else
         {
-
-            ui->inputFile_Confirm->setText("Success: Input file has been selected");
-            ui->inputFile_Confirm->setStyleSheet("QLabel { background-color:#1f6327; color:white;}");
             ui->Input_LineEdit->setStyleSheet("border: 1px solid green");
 
             //Check if an output and log file have been specified or will be generated based on input
@@ -133,53 +122,134 @@ void MainWindow::on_process_Button_clicked()
                 outputFile = new QFile(outputFileName);
                 if(!checkPermissions(outputFile, 1))
                 {
-                    QMessageBox::warning(this, "Permissions Error", "Output file not opened!");
-                    ui->outputFile_Confirm->setText("Error: File does not have write permissions. (To automatically generate a file leave the field blank and begin processing again)");
-                    ui->outputFile_Confirm->setStyleSheet("QLabel { background-color:#96201a; color:white;}");
+                    QMessageBox::warning(this, "Permissions Error", "Please select a different output file");
                     ui->output_LineEdit->setStyleSheet("border: 1px solid red");
                 }
                 else
                 {
-                    ui->outputFile_Confirm->setText("Success: Output file has been selected");
-                    ui->outputFile_Confirm->setStyleSheet("QLabel { background-color:#1f6327; color:white;}");
                     ui->output_LineEdit->setStyleSheet("border: 1px solid green");
                 }
             }
             else//Generate an output file based on input
             {
-                ui->outputFile_Confirm->setText("Warning: An output file has been generated based on input file name");
-                ui->outputFile_Confirm->setStyleSheet("QLabel {background-color:#ad6c0a; color:white;}");
-                ui->output_LineEdit->setStyleSheet("border: 1px solid orange");
+                outputFileName = generateOutputFile(inputFileName, "Output.txt");
+
+                if(outputFile != nullptr)
+                {
+                    outputFile->close();
+                    outputFile=nullptr;
+                }
+
+                outputFile = new QFile(outputFileName);
+                int currentIndex = outputFileName.length()-1;
+                for(;currentIndex>0; --currentIndex)
+                {
+                    if(outputFileName.at(currentIndex) == '.')
+                    {
+                        break;
+                    }
+                }
+                char nameInt = '0';
+                while(outputFile->exists())
+                {
+                    if(nameInt == '0')//If first run through the loop
+                    {
+                        nameInt++;
+                        outputFileName.insert(currentIndex, nameInt);
+                    }
+                    else
+                    {
+                        outputFile->close();
+                        outputFile = nullptr;
+                        outputFileName.replace(currentIndex, 1, nameInt);
+                        outputFile = new QFile(outputFileName);
+                        nameInt++;
+                    }
+
+                }
+                //create file and update text field
+                outputFile->open(QIODevice::WriteOnly);
+                ui->output_LineEdit->setText(outputFileName);
             }
 
 
             //Check if a log file has been selected
             if(logFileName.length() > 0)
             {
-                ui->logFile_Confirm->setText("Success: log file has been selected");
-                ui->logFile_Confirm->setStyleSheet("QLabel { background-color:#1f6327; color:white;}");
-                ui->log_LineEdit->setStyleSheet("border: 1px solid green");
+                logFile = new QFile(logFileName);
+
+                if(!checkPermissions(logFile,1))//Check the permissions of the selected log file
+                {
+                    QMessageBox::warning(this, "Permissions Error", "Please select a different log file");
+                    ui->log_LineEdit->setStyleSheet("border: 1px solid red");
+                }
+                else
+                {
+                    ui->log_LineEdit->setStyleSheet("border: 1px solid green");
+                }
             }
-            else
+            else//Generate a log file based on input file name
             {
-                ui->logFile_Confirm->setText("Warning: A log file has been generated based on input file name");
-                ui->logFile_Confirm->setStyleSheet("QLabel {background-color:#ad6c0a; color:white;}");
-                ui->log_LineEdit->setStyleSheet("border: 1px solid orange");
-            }
+                logFileName = generateOutputFile(inputFileName, "Log.txt");
+
+                if(logFile != nullptr)
+                {
+                    logFile->close();
+                    logFile=nullptr;
+                }
+
+                logFile = new QFile(logFileName);
+                int currentIndex = logFileName.length()-1;
+                for(;currentIndex>0; --currentIndex)
+                {
+                    if(logFileName.at(currentIndex) == '.')
+                    {
+                        break;
+                    }
+                }
+                char nameInt = '0';
+                while(logFile->exists())
+                {
+                    if(nameInt == '0')//If first run through the loop
+                    {
+                        nameInt++;
+                        logFileName.insert(currentIndex, nameInt);
+                    }
+                    else
+                    {
+                        logFile->close();
+                        logFile = nullptr;
+                        logFileName.replace(currentIndex, 1, nameInt);
+                        logFile = new QFile(logFileName);
+                        nameInt++;
+                    }
+
+                }
+                //create file and update text field
+                logFile->open(QIODevice::WriteOnly);
+                ui->log_LineEdit->setText(logFileName);
+            }//End Generate log file
         }
     }
     else
     {
-        ui->inputFile_Confirm->setText("Error: An input file must be specified");
-        ui->inputFile_Confirm->setStyleSheet("QLabel { background-color:#96201a; color:white;}");
         ui->Input_LineEdit->setStyleSheet("border: 1px solid red");
-        ui->logFile_Confirm->setText("");
-        ui->logFile_Confirm->setStyleSheet("");
-        ui->outputFile_Confirm->setText("");
-        ui->outputFile_Confirm->setStyleSheet("");
         ui->log_LineEdit->setStyleSheet("");
         ui->output_LineEdit->setStyleSheet("");
     }
-    ui->inputFile_Confirm->show();
 }
-
+//-----------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------//
+QString MainWindow::generateOutputFile(QString inputPath, QString fileType)
+{
+    for(int i=inputPath.length()-1; i>0; --i)
+    {
+        if(inputPath.at(i) == ".")//if the beginning of the extension is found
+        {
+            //Remove the extension and append to the new filename
+            inputPath.remove(i,inputPath.length()-i);
+            inputPath.append("_" + fileType);
+            return inputPath;
+        }
+    }
+}

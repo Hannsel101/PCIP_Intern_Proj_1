@@ -29,13 +29,13 @@ private:
      *            for output files.
      * */
 
-    void generateOutputFile(QString inputPath, QString outputExtension);
+    QString generateOutputFile(QString inputPath, QString fileType);
     /*
      * Generates an output file based on the inputPath specified by the user and the extension
      * expected for the file.
      *
      * inputPath = absolute path leading up to the input file
-     * outputExtension = the extension for the newly generated file
+     * fileType = the extension for the newly generated file
      * */
 
 
