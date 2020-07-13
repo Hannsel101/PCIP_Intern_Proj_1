@@ -30,19 +30,21 @@ class Ui_MainWindow
 public:
     QWidget *centralwidget;
     QGridLayout *gridLayout;
-    QPushButton *SelectFile_Button;
-    QLineEdit *output_LineEdit;
-    QPushButton *SelectFile2_Button;
-    QLineEdit *Input_LineEdit;
-    QLabel *Input_Label;
-    QPushButton *InputSearch_Button;
-    QLabel *label;
-    QPushButton *OutputSearch_Button;
     QVBoxLayout *verticalLayout_2;
     QFrame *line;
+    QPushButton *process_Button;
     QLabel *inputFile_Confirm;
     QLabel *outputFile_Confirm;
     QSpacerItem *verticalSpacer;
+    QLabel *log_Label;
+    QLineEdit *Input_LineEdit;
+    QLabel *output_Label;
+    QLabel *Input_Label;
+    QPushButton *OutputSearch_Button;
+    QLineEdit *output_LineEdit;
+    QPushButton *InputSearch_Button;
+    QLineEdit *log_LineEdit;
+    QPushButton *LogSearch_Button;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -57,48 +59,6 @@ public:
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         gridLayout->setVerticalSpacing(0);
         gridLayout->setContentsMargins(-1, 0, -1, -1);
-        SelectFile_Button = new QPushButton(centralwidget);
-        SelectFile_Button->setObjectName(QString::fromUtf8("SelectFile_Button"));
-
-        gridLayout->addWidget(SelectFile_Button, 0, 3, 1, 1);
-
-        output_LineEdit = new QLineEdit(centralwidget);
-        output_LineEdit->setObjectName(QString::fromUtf8("output_LineEdit"));
-
-        gridLayout->addWidget(output_LineEdit, 1, 1, 1, 1);
-
-        SelectFile2_Button = new QPushButton(centralwidget);
-        SelectFile2_Button->setObjectName(QString::fromUtf8("SelectFile2_Button"));
-
-        gridLayout->addWidget(SelectFile2_Button, 1, 3, 1, 1);
-
-        Input_LineEdit = new QLineEdit(centralwidget);
-        Input_LineEdit->setObjectName(QString::fromUtf8("Input_LineEdit"));
-
-        gridLayout->addWidget(Input_LineEdit, 0, 1, 1, 1);
-
-        Input_Label = new QLabel(centralwidget);
-        Input_Label->setObjectName(QString::fromUtf8("Input_Label"));
-
-        gridLayout->addWidget(Input_Label, 0, 0, 1, 1);
-
-        InputSearch_Button = new QPushButton(centralwidget);
-        InputSearch_Button->setObjectName(QString::fromUtf8("InputSearch_Button"));
-        InputSearch_Button->setMaximumSize(QSize(30, 16777215));
-
-        gridLayout->addWidget(InputSearch_Button, 0, 2, 1, 1);
-
-        label = new QLabel(centralwidget);
-        label->setObjectName(QString::fromUtf8("label"));
-
-        gridLayout->addWidget(label, 1, 0, 1, 1);
-
-        OutputSearch_Button = new QPushButton(centralwidget);
-        OutputSearch_Button->setObjectName(QString::fromUtf8("OutputSearch_Button"));
-        OutputSearch_Button->setMaximumSize(QSize(30, 16777215));
-
-        gridLayout->addWidget(OutputSearch_Button, 1, 2, 1, 1);
-
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         line = new QFrame(centralwidget);
@@ -114,6 +74,11 @@ public:
         line->setFrameShape(QFrame::HLine);
 
         verticalLayout_2->addWidget(line);
+
+        process_Button = new QPushButton(centralwidget);
+        process_Button->setObjectName(QString::fromUtf8("process_Button"));
+
+        verticalLayout_2->addWidget(process_Button);
 
         inputFile_Confirm = new QLabel(centralwidget);
         inputFile_Confirm->setObjectName(QString::fromUtf8("inputFile_Confirm"));
@@ -145,7 +110,55 @@ public:
         verticalLayout_2->addItem(verticalSpacer);
 
 
-        gridLayout->addLayout(verticalLayout_2, 2, 0, 1, 4);
+        gridLayout->addLayout(verticalLayout_2, 3, 0, 1, 4);
+
+        log_Label = new QLabel(centralwidget);
+        log_Label->setObjectName(QString::fromUtf8("log_Label"));
+
+        gridLayout->addWidget(log_Label, 2, 0, 1, 1);
+
+        Input_LineEdit = new QLineEdit(centralwidget);
+        Input_LineEdit->setObjectName(QString::fromUtf8("Input_LineEdit"));
+
+        gridLayout->addWidget(Input_LineEdit, 0, 1, 1, 1);
+
+        output_Label = new QLabel(centralwidget);
+        output_Label->setObjectName(QString::fromUtf8("output_Label"));
+
+        gridLayout->addWidget(output_Label, 1, 0, 1, 1);
+
+        Input_Label = new QLabel(centralwidget);
+        Input_Label->setObjectName(QString::fromUtf8("Input_Label"));
+
+        gridLayout->addWidget(Input_Label, 0, 0, 1, 1);
+
+        OutputSearch_Button = new QPushButton(centralwidget);
+        OutputSearch_Button->setObjectName(QString::fromUtf8("OutputSearch_Button"));
+        OutputSearch_Button->setMaximumSize(QSize(30, 16777215));
+
+        gridLayout->addWidget(OutputSearch_Button, 1, 2, 1, 1);
+
+        output_LineEdit = new QLineEdit(centralwidget);
+        output_LineEdit->setObjectName(QString::fromUtf8("output_LineEdit"));
+
+        gridLayout->addWidget(output_LineEdit, 1, 1, 1, 1);
+
+        InputSearch_Button = new QPushButton(centralwidget);
+        InputSearch_Button->setObjectName(QString::fromUtf8("InputSearch_Button"));
+        InputSearch_Button->setMaximumSize(QSize(30, 16777215));
+
+        gridLayout->addWidget(InputSearch_Button, 0, 2, 1, 1);
+
+        log_LineEdit = new QLineEdit(centralwidget);
+        log_LineEdit->setObjectName(QString::fromUtf8("log_LineEdit"));
+
+        gridLayout->addWidget(log_LineEdit, 2, 1, 1, 1);
+
+        LogSearch_Button = new QPushButton(centralwidget);
+        LogSearch_Button->setObjectName(QString::fromUtf8("LogSearch_Button"));
+        LogSearch_Button->setMaximumSize(QSize(30, 16777215));
+
+        gridLayout->addWidget(LogSearch_Button, 2, 2, 1, 1);
 
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
@@ -164,18 +177,20 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
-        SelectFile_Button->setText(QCoreApplication::translate("MainWindow", "Select File", nullptr));
-        output_LineEdit->setPlaceholderText(QCoreApplication::translate("MainWindow", "Example: C:/user/file.txt", nullptr));
-        SelectFile2_Button->setText(QCoreApplication::translate("MainWindow", "Select File", nullptr));
-        Input_LineEdit->setInputMask(QString());
-        Input_LineEdit->setText(QString());
-        Input_LineEdit->setPlaceholderText(QCoreApplication::translate("MainWindow", "Example: C:/user/file.txt", nullptr));
-        Input_Label->setText(QCoreApplication::translate("MainWindow", "Input File", nullptr));
-        InputSearch_Button->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
-        label->setText(QCoreApplication::translate("MainWindow", "Output File", nullptr));
-        OutputSearch_Button->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        process_Button->setText(QCoreApplication::translate("MainWindow", "Process", nullptr));
         inputFile_Confirm->setText(QCoreApplication::translate("MainWindow", "Input File: ", nullptr));
         outputFile_Confirm->setText(QCoreApplication::translate("MainWindow", "- No output file selected", nullptr));
+        log_Label->setText(QCoreApplication::translate("MainWindow", "Log File", nullptr));
+        Input_LineEdit->setInputMask(QString());
+        Input_LineEdit->setText(QString());
+        Input_LineEdit->setPlaceholderText(QCoreApplication::translate("MainWindow", "Example: C:/user/input.txt", nullptr));
+        output_Label->setText(QCoreApplication::translate("MainWindow", "Output File", nullptr));
+        Input_Label->setText(QCoreApplication::translate("MainWindow", "Input File", nullptr));
+        OutputSearch_Button->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        output_LineEdit->setPlaceholderText(QCoreApplication::translate("MainWindow", "Example: C:/user/output.txt", nullptr));
+        InputSearch_Button->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        log_LineEdit->setPlaceholderText(QCoreApplication::translate("MainWindow", "Example: C:/user/log.txt", nullptr));
+        LogSearch_Button->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
     } // retranslateUi
 
 };

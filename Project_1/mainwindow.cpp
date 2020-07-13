@@ -24,9 +24,13 @@ MainWindow::~MainWindow()
 }
 //-----------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------//
-void MainWindow::on_SelectFile_Button_clicked()
-{
-    //Extract the text entered by the user and store it in a QFile object
+//-----------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------//
+
+//Selecting Files
+/*
+ *
+ *  //Extract the text entered by the user and store it in a QFile object
     //for further processing
     inputFileName = ui->Input_LineEdit->text();
     inputFile = new QFile(inputFileName);
@@ -52,12 +56,8 @@ void MainWindow::on_SelectFile_Button_clicked()
     {
         QMessageBox::critical(this, "Error", "File does not exist");
     }
-}
-//-----------------------------------------------------------------------------------------------//
-//-----------------------------------------------------------------------------------------------//
-void MainWindow::on_SelectFile2_Button_clicked()
-{
-    outputFileName = ui->output_LineEdit->text();
+ *
+ * outputFileName = ui->output_LineEdit->text();
     outputFile = new QFile(outputFileName);
 
     bool goodFile = checkPermissions(outputFile, 1);
@@ -73,43 +73,29 @@ void MainWindow::on_SelectFile2_Button_clicked()
     {
         QMessageBox::warning(this, "Permissions Error", "File does not have write permissions");
     }
-
-    //Verify the file exist before continuing
-    //if(outputFile->exists())
-    //{
-        //Check the file permissions
-      //  if(!outputFile->open(QFile::ReadOnly | QFile::Text))
-       // {
-         //   QMessageBox::warning(this, "Permissions Error", "File does not have write permissions");
-        //}
-        //else
-        //{
-         //   QMessageBox::information(this, "Success", "Output file has been selected");
-          //  QString confirmSelection = "Output File: " + outputFileName;
-           // ui->outputFile_Confirm->setText(confirmSelection);
-           // ui->outputFile_Confirm->setStyleSheet("QLabel { background-color:green; color:white;}");
-        //}
-    //}
-    //***ADD OUTPUT SELECT HERE LATER*******//
-    //***ADD OUTPUT SELECT HERE LATER*******//
-    //***ADD OUTPUT SELECT HERE LATER*******//
-    //***ADD OUTPUT SELECT HERE LATER*******//
-    //***ADD OUTPUT SELECT HERE LATER*******//
-
-}
+ *
+ *
+*/
 //-----------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------//
 void MainWindow::on_InputSearch_Button_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, "Open a file", QDir::homePath());
-    QMessageBox::information(this, "..", fileName);
+    //Begin the search from the home directory of the current profile
+    inputFileName = QFileDialog::getOpenFileName(this, "Open a file", QDir::homePath());
+
+    //update the textfield in the GUI to show the selected filepath
+    ui->Input_LineEdit->setText(inputFileName);
+
 }
 //-----------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------//
 void MainWindow::on_OutputSearch_Button_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, "Open a file", QDir::homePath());
-    QMessageBox::information(this, "..", fileName);
+    //Begin the search from the home directory of the current profile
+    outputFileName = QFileDialog::getSaveFileName(this, "Open a file", QDir::homePath());
+
+    //update the textfield in the GUI to show the selected filepath
+    ui->output_LineEdit->setText(outputFileName);
 }
 //-----------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------//
@@ -147,4 +133,9 @@ bool MainWindow::checkPermissions(QFile *file, int fileType)
     {
         return false;
     }
+}
+
+void MainWindow::on_process_Button_clicked()
+{
+
 }

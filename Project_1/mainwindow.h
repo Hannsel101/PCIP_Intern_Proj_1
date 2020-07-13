@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QFile>
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -24,17 +25,14 @@ private:
 
 
 private slots:
-    void on_SelectFile_Button_clicked();
-    //Button to finalize the selection of an input file
-
-    void on_SelectFile2_Button_clicked();
-    //Button to finalize the selection of an output file
-
     void on_InputSearch_Button_clicked();
     //Button for searching for an input file through the file explorer
 
     void on_OutputSearch_Button_clicked();
     //Button for searching for an output file through the file explorer
+
+
+    void on_process_Button_clicked();
 
 private:
     Ui::MainWindow *ui;
