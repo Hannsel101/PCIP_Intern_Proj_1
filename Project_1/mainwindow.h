@@ -19,26 +19,49 @@ public:
 
 private:
     bool checkPermissions(QFile *file, int fileType);
-    //Checks that the permissions of a file coincide with the type of file
-    //provided.
-    //fileType can currently accept 0 for input files and any value greater than 0 for output files.
+    /*
+     * Checks file permissions for input/output files.
+     * Returns a boolean TRUE if the file passes all checks.
+     * Returns a boolean FALSE otherwise
+     *
+     * file = a pointer to a file specified by the user during runtime
+     * fileType = an integer that accepts "0" for input files and "1"
+     *            for output files.
+     * */
+
+    void generateOutputFile(QString inputPath, QString outputExtension);
+    /*
+     * Generates an output file based on the inputPath specified by the user and the extension
+     * expected for the file.
+     *
+     * inputPath = absolute path leading up to the input file
+     * outputExtension = the extension for the newly generated file
+     * */
 
 
 private slots:
     void on_InputSearch_Button_clicked();
-    //Button for searching for an input file through the file explorer
+    //Button for selecting an input file through the file explorer
 
     void on_OutputSearch_Button_clicked();
-    //Button for searching for an output file through the file explorer
+    //Button for selecting an output file through the file explorer
 
+    void on_LogSearch_Button_clicked();
+    //Button for selecting a log file through the file explorer
 
     void on_process_Button_clicked();
+    //Upon clicking the process button a series of checks will begin on the file selections.
+    //If no file is selected as input, then a message will prompt the user to select an input file.
+    //else if no file is selected for the
+
 
 private:
     Ui::MainWindow *ui;
     QFile *inputFile;
     QFile *outputFile;
-    QString inputFileName;
-    QString outputFileName;
+    QFile *logFile;
+    QString inputFileName = "";
+    QString outputFileName = "";
+    QString logFileName = "";
 };
 #endif // MAINWINDOW_H

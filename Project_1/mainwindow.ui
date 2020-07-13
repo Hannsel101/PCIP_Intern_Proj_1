@@ -24,42 +24,49 @@
     <item row="3" column="0" colspan="4">
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="Line" name="line">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>10</height>
-         </size>
-        </property>
-        <property name="baseSize">
-         <size>
-          <width>0</width>
-          <height>15</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Plain</enum>
-        </property>
-        <property name="lineWidth">
-         <number>15</number>
-        </property>
-        <property name="midLineWidth">
-         <number>10</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+       <widget class="QPushButton" name="process_Button">
+        <property name="text">
+         <string>Start Processing</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="process_Button">
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>10</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="fileStatusHeader">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+          <underline>true</underline>
+         </font>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
         <property name="text">
-         <string>Process</string>
+         <string>File Selection Status</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+        <property name="indent">
+         <number>100</number>
         </property>
        </widget>
       </item>
@@ -90,7 +97,7 @@
          <enum>QFrame::NoFrame</enum>
         </property>
         <property name="text">
-         <string>Input File: </string>
+         <string>Input file status</string>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -121,7 +128,55 @@
          </size>
         </property>
         <property name="text">
-         <string>- No output file selected</string>
+         <string>output file status</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="logFile_Confirm">
+        <property name="text">
+         <string>log file status</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>10</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="processingInformationHeader">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+          <underline>true</underline>
+         </font>
+        </property>
+        <property name="text">
+         <string>Processing Information</string>
+        </property>
+        <property name="indent">
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="recordsProcessed">
+        <property name="text">
+         <string>Records Processed: 0</string>
         </property>
        </widget>
       </item>
@@ -156,7 +211,7 @@
        <string/>
       </property>
       <property name="placeholderText">
-       <string>Example: C:/user/input.txt</string>
+       <string>Example: C:/user/input.NOB</string>
       </property>
      </widget>
     </item>
