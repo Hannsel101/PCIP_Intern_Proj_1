@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QMessageBox>
 #include <QFileDialog>
+#include "GPS_Sensor.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -113,130 +114,17 @@ void MainWindow::on_process_Button_clicked()
     {
         //Open input file and check permissions
         inputFile = new QFile(inputFileName);
-        if(!checkPermissions(inputFile, 0))
+        if(!checkPermissions(inputFile, 0))//Failed the permissions check
         {
             QMessageBox::warning(this, "Permissions Error", "Invalid input file!");
             ui->Input_LineEdit->setStyleSheet("border: 1px solid red");
         }
-        else
+        else//Passed the permissions check
         {
+            //Update the GUI and check for the output and log file text entry fields
             ui->Input_LineEdit->setStyleSheet("border: 1px solid green");
-
-            //Check if an output and log file have been specified or will be generated based on input
-            if(outputFileName.length() > 0)
-            {
-                outputFile = new QFile(outputFileName);
-                if(!checkPermissions(outputFile, 1))
-                {
-                    QMessageBox::warning(this, "Permissions Error", "Please select a different output file");
-                    ui->output_LineEdit->setStyleSheet("border: 1px solid red");
-                }
-                else
-                {
-                    ui->output_LineEdit->setStyleSheet("border: 1px solid green");
-                }
-            }
-            else//Generate an output file based on input
-            {
-                outputFileName = generateOutputFile(inputFileName, "Output.txt");
-
-                if(outputFile != nullptr)
-                {
-                    outputFile->close();
-                    outputFile=nullptr;
-                }
-
-                outputFile = new QFile(outputFileName);
-                int currentIndex = outputFileName.length()-1;
-                for(;currentIndex>0; --currentIndex)
-                {
-                    if(outputFileName.at(currentIndex) == '.')
-                    {
-                        break;
-                    }
-                }
-                char nameInt = '0';
-                while(outputFile->exists())
-                {
-                    if(nameInt == '0')//If first run through the loop
-                    {
-                        nameInt++;
-                        outputFileName.insert(currentIndex, nameInt);
-                    }
-                    else
-                    {
-                        outputFile->close();
-                        outputFile = nullptr;
-                        outputFileName.replace(currentIndex, 1, nameInt);
-                        outputFile = new QFile(outputFileName);
-                        nameInt++;
-                    }
-
-                }
-                //create file and update text field
-                outputFile->open(QIODevice::WriteOnly);
-                ui->output_LineEdit->setText(outputFileName);
-                ui->output_LineEdit->setStyleSheet("border: 1px solid green");
-            }
-
-
-            //Check if a log file has been selected
-            if(logFileName.length() > 0)
-            {
-                logFile = new QFile(logFileName);
-
-                if(!checkPermissions(logFile,1))//Check the permissions of the selected log file
-                {
-                    QMessageBox::warning(this, "Permissions Error", "Please select a different log file");
-                    ui->log_LineEdit->setStyleSheet("border: 1px solid red");
-                }
-                else
-                {
-                    ui->log_LineEdit->setStyleSheet("border: 1px solid green");
-                }
-            }
-            else//Generate a log file based on input file name
-            {
-                logFileName = generateOutputFile(inputFileName, "Log.txt");
-
-                if(logFile != nullptr)
-                {
-                    logFile->close();
-                    logFile=nullptr;
-                }
-
-                logFile = new QFile(logFileName);
-                int currentIndex = logFileName.length()-1;
-                for(;currentIndex>0; --currentIndex)
-                {
-                    if(logFileName.at(currentIndex) == '.')
-                    {
-                        break;
-                    }
-                }
-                char nameInt = '0';
-                while(logFile->exists())
-                {
-                    if(nameInt == '0')//If first run through the loop
-                    {
-                        nameInt++;
-                        logFileName.insert(currentIndex, nameInt);
-                    }
-                    else
-                    {
-                        logFile->close();
-                        logFile = nullptr;
-                        logFileName.replace(currentIndex, 1, nameInt);
-                        logFile = new QFile(logFileName);
-                        nameInt++;
-                    }
-
-                }
-                //create file and update text field
-                logFile->open(QIODevice::WriteOnly);
-                ui->log_LineEdit->setText(logFileName);
-                ui->log_LineEdit->setStyleSheet("border: 1px solid green");
-            }//End Generate log file
+            checkOutputFile();
+            checkLogFile();
         }
     }
     else
@@ -245,6 +133,129 @@ void MainWindow::on_process_Button_clicked()
         ui->log_LineEdit->setStyleSheet("");
         ui->output_LineEdit->setStyleSheet("");
     }
+}
+//-----------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------//
+void MainWindow::checkOutputFile()
+{
+    //Check if an output file has been specified or will be generated based on input
+    if(outputFileName.length() > 0)
+    {
+        outputFile = new QFile(outputFileName);
+        if(!checkPermissions(outputFile, 1))
+        {
+            QMessageBox::warning(this, "Permissions Error", "Please select a different output file");
+            ui->output_LineEdit->setStyleSheet("border: 1px solid red");
+        }
+        else
+        {
+            ui->output_LineEdit->setStyleSheet("border: 1px solid green");
+        }
+    }
+    else//Generate an output file based on input
+    {
+        outputFileName = generateOutputFile(inputFileName, "Output.txt");
+
+        if(outputFile != nullptr)
+        {
+            outputFile->close();
+            outputFile=nullptr;
+        }
+
+        outputFile = new QFile(outputFileName);
+        int currentIndex = outputFileName.length()-1;
+        for(;currentIndex>0; --currentIndex)
+        {
+            if(outputFileName.at(currentIndex) == '.')
+            {
+                break;
+            }
+        }
+        char nameInt = '0';
+        while(outputFile->exists())
+        {
+            if(nameInt == '0')//If first run through the loop
+            {
+                nameInt++;
+                outputFileName.insert(currentIndex, nameInt);
+            }
+            else
+            {
+                outputFile->close();
+                outputFile = nullptr;
+                outputFileName.replace(currentIndex, 1, nameInt);
+                outputFile = new QFile(outputFileName);
+                nameInt++;
+            }
+
+        }
+        //create file and update text field
+        outputFile->open(QIODevice::WriteOnly);
+        ui->output_LineEdit->setText(outputFileName);
+        ui->output_LineEdit->setStyleSheet("border: 1px solid green");
+    }
+}
+//-----------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------//
+void MainWindow::checkLogFile()
+{
+    //Check if a log file has been selected
+    if(logFileName.length() > 0)
+    {
+        logFile = new QFile(logFileName);
+
+        if(!checkPermissions(logFile,1))//Check the permissions of the selected log file
+        {
+            QMessageBox::warning(this, "Permissions Error", "Please select a different log file");
+            ui->log_LineEdit->setStyleSheet("border: 1px solid red");
+        }
+        else
+        {
+            ui->log_LineEdit->setStyleSheet("border: 1px solid green");
+        }
+    }
+    else//Generate a log file based on input file name
+    {
+        logFileName = generateOutputFile(inputFileName, "Log.txt");
+
+        if(logFile != nullptr)
+        {
+            logFile->close();
+            logFile=nullptr;
+        }
+
+        logFile = new QFile(logFileName);
+        int currentIndex = logFileName.length()-1;
+        for(;currentIndex>0; --currentIndex)
+        {
+            if(logFileName.at(currentIndex) == '.')
+            {
+                break;
+            }
+        }
+        char nameInt = '0';
+        while(logFile->exists())
+        {
+            if(nameInt == '0')//If first run through the loop
+            {
+                nameInt++;
+                logFileName.insert(currentIndex, nameInt);
+            }
+            else
+            {
+                logFile->close();
+                logFile = nullptr;
+                logFileName.replace(currentIndex, 1, nameInt);
+                logFile = new QFile(logFileName);
+                nameInt++;
+            }
+
+        }
+        //create file and update text field
+        logFile->open(QIODevice::WriteOnly);
+        ui->log_LineEdit->setText(logFileName);
+        ui->log_LineEdit->setStyleSheet("border: 1px solid green");
+    }//End Generate log file
 }
 //-----------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------//

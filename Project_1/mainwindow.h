@@ -29,6 +29,17 @@ private:
      *            for output files.
      * */
 
+    void checkOutputFile();
+    void checkLogFile();
+    /*
+     * The check""File() functions run through a series of checks to
+     * ensure that a suitable input/output/log file has been selected.
+     *
+     * If no output/log file has been selected then one will be generated
+     * for the user automatically in the same directory as the selected
+     * input file.
+     * */
+
     QString generateOutputFile(QString inputPath, QString fileType);
     /*
      * Generates an output file based on the inputPath specified by the user and the extension
