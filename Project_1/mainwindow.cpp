@@ -11,6 +11,12 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    //Setting up the folder images for file search buttons
+    QPixmap folderPixmap(":/images/images/folder.png");
+    ui->InputSearch_Button->setIcon(folderPixmap);
+    ui->OutputSearch_Button->setIcon(folderPixmap);
+    ui->LogSearch_Button->setIcon(folderPixmap);
+
     //Set pointers to null
     inputFile = nullptr;
     outputFile = nullptr;
@@ -170,6 +176,7 @@ void MainWindow::on_process_Button_clicked()
                 //create file and update text field
                 outputFile->open(QIODevice::WriteOnly);
                 ui->output_LineEdit->setText(outputFileName);
+                ui->output_LineEdit->setStyleSheet("border: 1px solid green");
             }
 
 
@@ -228,6 +235,7 @@ void MainWindow::on_process_Button_clicked()
                 //create file and update text field
                 logFile->open(QIODevice::WriteOnly);
                 ui->log_LineEdit->setText(logFileName);
+                ui->log_LineEdit->setStyleSheet("border: 1px solid green");
             }//End Generate log file
         }
     }
@@ -253,3 +261,5 @@ QString MainWindow::generateOutputFile(QString inputPath, QString fileType)
         }
     }
 }
+//-----------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------//
