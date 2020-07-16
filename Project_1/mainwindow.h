@@ -1,8 +1,15 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "GPS_Sensor.h"
+#include "messages.h"
+
 #include <QMainWindow>
 #include <QFile>
+#include <QDir>
+#include <QMessageBox>
+#include <QFileDialog>
+#include <QDoubleValidator>
 
 
 QT_BEGIN_NAMESPACE
@@ -66,6 +73,8 @@ private slots:
     //else if no file is selected for the
 
 
+    void on_antennaPosition_Button_clicked();
+
 private:
     Ui::MainWindow *ui;
     QFile *inputFile;
@@ -74,5 +83,6 @@ private:
     QString inputFileName = "";
     QString outputFileName = "";
     QString logFileName = "";
+    GPS_Sensor sensor;
 };
 #endif // MAINWINDOW_H

@@ -19,12 +19,15 @@ SOURCES += \
     GPS_Sensor.cpp \
     main.cpp \
     mainwindow.cpp \
+    messages.cpp \
     myThread.cpp
 
 HEADERS += \
     GPS_Sensor.h \
     mainwindow.h \
-    myThread.h
+    messages.h \
+    myThread.h \
+    structs.h
 
 FORMS += \
     mainwindow.ui

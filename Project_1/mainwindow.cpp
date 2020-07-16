@@ -1,10 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QFile>
-#include <QDir>
-#include <QMessageBox>
-#include <QFileDialog>
-#include "GPS_Sensor.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -17,6 +12,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->InputSearch_Button->setIcon(folderPixmap);
     ui->OutputSearch_Button->setIcon(folderPixmap);
     ui->LogSearch_Button->setIcon(folderPixmap);
+
+    //Ensure only doubles are allowed in (E,F,G) coordinate input
+    ui->E_Input->setValidator(new QDoubleValidator(0,100,10,this));
+    ui->F_Input->setValidator(new QDoubleValidator(0,100,10,this));
+    ui->G_Input->setValidator(new QDoubleValidator(0,100,10,this));
 
     //Set pointers to null
     inputFile = nullptr;
@@ -68,10 +68,11 @@ bool MainWindow::checkPermissions(QFile *file, int fileType)
     {
         if(file->exists())
         {
-            if(!file->open(QFile::WriteOnly | QFile::Text))
+            if(!file->open(QFile::ReadOnly))
             {
                 return false;
             }
+            file->close();
             return true;
         }
         return false;
@@ -80,25 +81,22 @@ bool MainWindow::checkPermissions(QFile *file, int fileType)
     {
         if(file->exists())
         {
-            if(!file->open(QFile::ReadOnly | QFile::Text))
+            if(!file->open(QFile::WriteOnly | QFile::Text))
             {
                 return false;
             }
+
+            file->close();
             return true;
+
         }
-        else
-        {
-            return false;
-        }
+        return true;
+        //else
+        //{
+          //  return false;
+        //}
     }
-    else if(fileType == 2)//Log file
-    {
-        return false;//placeholder
-    }
-    else
-    {
-        return false;
-    }
+
 }
 //-----------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------//
@@ -121,10 +119,28 @@ void MainWindow::on_process_Button_clicked()
         }
         else//Passed the permissions check
         {
+
             //Update the GUI and check for the output and log file text entry fields
             ui->Input_LineEdit->setStyleSheet("border: 1px solid green");
             checkOutputFile();
             checkLogFile();
+
+            //For Debugging**************************************
+            //****************************************************
+            messages mes1;
+            mes1.readAndProcess(inputFileName, outputFileName, logFileName);
+            //For Debugging**************************************
+            //****************************************************
+
+            if((ui->E_Input->text() > 0) && (ui->F_Input->text() > 0) && (ui->G_Input->text() > 0))
+            {
+                double E = ui->E_Input->text().toDouble();
+                double F = ui->F_Input->text().toDouble();
+                double G = ui->G_Input->text().toDouble();
+                sensor.setPos(E, F, G);
+                QString valueAsString = QString::number(E);
+                ui->endTime->setText(valueAsString);
+            }
         }
     }
     else
@@ -271,6 +287,48 @@ QString MainWindow::generateOutputFile(QString inputPath, QString fileType)
             return inputPath;
         }
     }
+    return "";
 }
 //-----------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------//
+void MainWindow::on_antennaPosition_Button_clicked()
+{
+    QString antennaFileName = QFileDialog::getOpenFileName(this, "Open a file", QDir::homePath());
+    bool test = sensor.setFile(antennaFileName);
+
+    if(test)
+    {
+        if(sensor.extractPos())
+        {
+            //QString updateGUI = QString::number(sensor.getPosE());
+            //ui->E_Input->setText(updateGUI);
+
+            //updateGUI = QString::number(sensor.getPosF());
+            //ui->F_Input->setText(updateGUI);
+
+            //updateGUI = QString::number(sensor.getPosG());
+            //ui->G_Input->setText(updateGUI);
+
+            QStringList line = sensor.getDebug().split(',');
+            sensor.setPos(line[0].toDouble(), line[1].toDouble(), 0);
+            QString conversion = QString::number(sensor.getPosE());
+            ui->E_Input->setText(conversion);
+
+            conversion = QString::number(sensor.getPosF());
+            ui->F_Input->setText(conversion);
+
+        }
+        else
+        {
+            qDebug("Wrong file format!");
+        }
+    }
+    else
+    {
+        qDebug("Invalid file name");
+    }
+
+    //messages message1;
+    //char msgBuf[1024];
+    //message1.readIntoBuffer(msgBuf);
+}

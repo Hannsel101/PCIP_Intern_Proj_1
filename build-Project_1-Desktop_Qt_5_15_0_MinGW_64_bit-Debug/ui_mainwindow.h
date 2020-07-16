@@ -39,11 +39,11 @@ public:
     QHBoxLayout *horizontalLayout_4;
     QLabel *label_4;
     QLabel *label_5;
-    QLineEdit *lineEdit;
+    QLineEdit *E_Input;
     QLabel *label_6;
-    QLineEdit *lineEdit_2;
+    QLineEdit *F_Input;
     QLabel *label_7;
-    QLineEdit *lineEdit_3;
+    QLineEdit *G_Input;
     QLabel *label_8;
     QPushButton *antennaPosition_Button;
     QSpacerItem *verticalSpacer;
@@ -145,12 +145,12 @@ public:
 
         horizontalLayout_4->addWidget(label_5);
 
-        lineEdit = new QLineEdit(centralwidget);
-        lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
-        lineEdit->setMinimumSize(QSize(0, 25));
-        lineEdit->setMaximumSize(QSize(20, 16777215));
+        E_Input = new QLineEdit(centralwidget);
+        E_Input->setObjectName(QString::fromUtf8("E_Input"));
+        E_Input->setMinimumSize(QSize(0, 25));
+        E_Input->setMaximumSize(QSize(30, 16777215));
 
-        horizontalLayout_4->addWidget(lineEdit);
+        horizontalLayout_4->addWidget(E_Input);
 
         label_6 = new QLabel(centralwidget);
         label_6->setObjectName(QString::fromUtf8("label_6"));
@@ -160,12 +160,12 @@ public:
 
         horizontalLayout_4->addWidget(label_6);
 
-        lineEdit_2 = new QLineEdit(centralwidget);
-        lineEdit_2->setObjectName(QString::fromUtf8("lineEdit_2"));
-        lineEdit_2->setMinimumSize(QSize(0, 25));
-        lineEdit_2->setMaximumSize(QSize(20, 16777215));
+        F_Input = new QLineEdit(centralwidget);
+        F_Input->setObjectName(QString::fromUtf8("F_Input"));
+        F_Input->setMinimumSize(QSize(0, 25));
+        F_Input->setMaximumSize(QSize(30, 16777215));
 
-        horizontalLayout_4->addWidget(lineEdit_2);
+        horizontalLayout_4->addWidget(F_Input);
 
         label_7 = new QLabel(centralwidget);
         label_7->setObjectName(QString::fromUtf8("label_7"));
@@ -175,12 +175,12 @@ public:
 
         horizontalLayout_4->addWidget(label_7);
 
-        lineEdit_3 = new QLineEdit(centralwidget);
-        lineEdit_3->setObjectName(QString::fromUtf8("lineEdit_3"));
-        lineEdit_3->setMinimumSize(QSize(0, 25));
-        lineEdit_3->setMaximumSize(QSize(20, 16777215));
+        G_Input = new QLineEdit(centralwidget);
+        G_Input->setObjectName(QString::fromUtf8("G_Input"));
+        G_Input->setMinimumSize(QSize(0, 25));
+        G_Input->setMaximumSize(QSize(30, 16777215));
 
-        horizontalLayout_4->addWidget(lineEdit_3);
+        horizontalLayout_4->addWidget(G_Input);
 
         label_8 = new QLabel(centralwidget);
         label_8->setObjectName(QString::fromUtf8("label_8"));
@@ -340,11 +340,11 @@ public:
         label_9->setText(QCoreApplication::translate("MainWindow", "GPS Antenna Position", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "ECEF Coordinates:", nullptr));
         label_5->setText(QCoreApplication::translate("MainWindow", "(", nullptr));
-        lineEdit->setPlaceholderText(QCoreApplication::translate("MainWindow", "E", nullptr));
+        E_Input->setPlaceholderText(QCoreApplication::translate("MainWindow", "E", nullptr));
         label_6->setText(QCoreApplication::translate("MainWindow", ",", nullptr));
-        lineEdit_2->setPlaceholderText(QCoreApplication::translate("MainWindow", "F", nullptr));
+        F_Input->setPlaceholderText(QCoreApplication::translate("MainWindow", "F", nullptr));
         label_7->setText(QCoreApplication::translate("MainWindow", ",", nullptr));
-        lineEdit_3->setPlaceholderText(QCoreApplication::translate("MainWindow", "G", nullptr));
+        G_Input->setPlaceholderText(QCoreApplication::translate("MainWindow", "G", nullptr));
         label_8->setText(QCoreApplication::translate("MainWindow", ")", nullptr));
         antennaPosition_Button->setText(QCoreApplication::translate("MainWindow", "Load Position", nullptr));
         processingInformationHeader->setText(QCoreApplication::translate("MainWindow", "Processing Information", nullptr));
