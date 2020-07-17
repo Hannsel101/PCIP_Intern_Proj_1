@@ -18,8 +18,8 @@ public:
     ~messages();
 private:
     NovaHeader nova_msg;
-    char *sync_ptr;
-    char *msg_ptr;
+    unsigned char *sync_ptr;
+    unsigned char *msg_ptr;
 
 };
 

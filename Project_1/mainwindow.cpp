@@ -178,35 +178,9 @@ void MainWindow::checkOutputFile()
             outputFile=nullptr;
         }
 
-        outputFile = new QFile(outputFileName);
-        int currentIndex = outputFileName.length()-1;
-        for(;currentIndex>0; --currentIndex)
-        {
-            if(outputFileName.at(currentIndex) == '.')
-            {
-                break;
-            }
-        }
-        char nameInt = '0';
-        while(outputFile->exists())
-        {
-            if(nameInt == '0')//If first run through the loop
-            {
-                nameInt++;
-                outputFileName.insert(currentIndex, nameInt);
-            }
-            else
-            {
-                outputFile->close();
-                outputFile = nullptr;
-                outputFileName.replace(currentIndex, 1, nameInt);
-                outputFile = new QFile(outputFileName);
-                nameInt++;
-            }
-
-        }
         //create file and update text field
-        outputFile->open(QIODevice::WriteOnly);
+        //outputFile->open(QIODevice::WriteOnly);
+        qDebug() << endl << outputFileName << endl;
         ui->output_LineEdit->setText(outputFileName);
         ui->output_LineEdit->setStyleSheet("border: 1px solid green");
     }
@@ -240,35 +214,6 @@ void MainWindow::checkLogFile()
             logFile=nullptr;
         }
 
-        logFile = new QFile(logFileName);
-        int currentIndex = logFileName.length()-1;
-        for(;currentIndex>0; --currentIndex)
-        {
-            if(logFileName.at(currentIndex) == '.')
-            {
-                break;
-            }
-        }
-        char nameInt = '0';
-        while(logFile->exists())
-        {
-            if(nameInt == '0')//If first run through the loop
-            {
-                nameInt++;
-                logFileName.insert(currentIndex, nameInt);
-            }
-            else
-            {
-                logFile->close();
-                logFile = nullptr;
-                logFileName.replace(currentIndex, 1, nameInt);
-                logFile = new QFile(logFileName);
-                nameInt++;
-            }
-
-        }
-        //create file and update text field
-        logFile->open(QIODevice::WriteOnly);
         ui->log_LineEdit->setText(logFileName);
         ui->log_LineEdit->setStyleSheet("border: 1px solid green");
     }//End Generate log file
