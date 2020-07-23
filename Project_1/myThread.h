@@ -2,6 +2,8 @@
 #define MYTHREAD_H
 
 #include <QtCore>
+#include "messages.h"
+#include "GPS_Sensor.h"
 
 class myThread: public QThread
 {
@@ -10,6 +12,10 @@ public:
     explicit myThread(QObject *parent = 0);
     void run();
     bool Stop;
+    QString InputFileName;
+    QString OutputFileName;
+    QString LogFileName;
+    GPS_Sensor sensor;
 
 public slots:
 

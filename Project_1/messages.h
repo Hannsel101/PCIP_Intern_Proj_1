@@ -3,12 +3,13 @@
 
 #include "structs.h"
 #include <QtCore>
+#include "GPS_Sensor.h"
 
 class messages
 {
 public:
     void readAndProcess(QString inputFileName,
-                        QString outputFileName, QString logFileName);
+                        QString outputFileName, QString logFileName, GPS_Sensor sensor);
     /*
      * Read message contents into buffer
      * */

@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     //Setup extra Thread
     mThread = new myThread(this);
-    connect(mThread, SIGNAL(NumberChanged(int)), this, SLOT(onNumberChanged(int)));
+    //connect(mThread, SIGNAL(NumberChanged(int)), this, SLOT(onNumberChanged(int)));
 
     //Setting up the folder images for file search buttons
     QPixmap folderPixmap(":/images/images/folder.png");
@@ -131,8 +131,13 @@ void MainWindow::on_process_Button_clicked()
 
             //For Debugging**************************************
             //****************************************************
-            messages mes1;
-            mes1.readAndProcess(inputFileName, outputFileName, logFileName);
+            mThread->InputFileName = inputFileName;
+            mThread->OutputFileName = outputFileName;
+            mThread->LogFileName = logFileName;
+
+
+            //messages mes1;
+            //mes1.readAndProcess(inputFileName, outputFileName, logFileName);
             //For Debugging**************************************
             //****************************************************
 
@@ -141,7 +146,7 @@ void MainWindow::on_process_Button_clicked()
                 double E = ui->E_Input->text().toDouble();
                 double F = ui->F_Input->text().toDouble();
                 double G = ui->G_Input->text().toDouble();
-                sensor.setPos(E, F, G);
+                mThread->sensor.setPos(E, F, G);
                 QString valueAsString = QString::number(E);
                 ui->endTime->setText(valueAsString);
             }

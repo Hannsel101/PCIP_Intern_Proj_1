@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <vector>
 #include <iterator>
+#include <exception>
 
 #define CRC32_POLYNOMIAL 0xEDB88320L
 
@@ -57,10 +58,9 @@ unsigned long CalculateBlockCRC32( unsigned long ulCount, unsigned char
     unsigned char v;
     unsigned long ulCRC = 0;
     unsigned int endIdx = RING_IDX(startIdx + ulCount);
-    //while ( ulCount-- != 0 ) {
+
     for(unsigned int currIdx = startIdx; currIdx != endIdx; ){
         t = RING_IDX(currIdx);
-        v = ucBuffer[t];
         ulTemp1 = ( ulCRC >> 8 ) & 0x00FFFFFFL;
         ulTemp2 = CRC32Value( ((int) ulCRC ^ ucBuffer[t] ) & 0xFF );
         ulCRC = ulTemp1 ^ ulTemp2;
@@ -71,7 +71,7 @@ unsigned long CalculateBlockCRC32( unsigned long ulCount, unsigned char
 //-----------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------//
 void messages::readAndProcess(QString inputFileName,
-                              QString outputFileName, QString logFileName)
+                              QString outputFileName, QString logFileName, GPS_Sensor sensor)
 {
 
 
@@ -101,16 +101,18 @@ void messages::readAndProcess(QString inputFileName,
 
         //Open input and output files
         fopen_s(&inputFile, inputName, "rb");
-        errno_t err = fopen_s(&outputFile, outputName, "wt");
+        fopen_s(&outputFile, outputName, "wt");
+
+        //Comma seperated for CSV file formatting
+        fprintf(outputFile, "Time,UTC Time,Number of GPS Satellites,E,F,G,deltaE,deltaF,deltaG,deltaRSS\r\n");
+        fflush(outputFile);
 
 
 
         //When the last stream of memory has been read from the file
         //set the lastRead flag to true to indicate a final read.
-        while(!DONE && !lastRead)
+        while(!(DONE && lastRead))
         {
-
-
             /*
              * READING PORTION
              * */
@@ -120,6 +122,9 @@ void messages::readAndProcess(QString inputFileName,
 
                 for(int k=0; k<CHUNK_SIZE; ++k)
                 {
+                    int filepos = ftell(inputFile);
+                    printf("File Position: %d\r\n", filepos);
+
                     //Read up to 4096 bytes out of the input file stream
                     numread = fread(&msgBuffer[write_Index], 1, 1, inputFile);
 
@@ -215,24 +220,27 @@ void messages::readAndProcess(QString inputFileName,
                     {
                     case 43://RANGE
                     {
-                        unsigned long numObs = msgBuffer[RING_IDX(read_Index+3)] << 24 |
-                                               msgBuffer[RING_IDX(read_Index+2)] << 16 |
-                                               msgBuffer[RING_IDX(read_Index+1)] << 8 |
-                                               msgBuffer[RING_IDX(read_Index)];
+                        unsigned long numObs = (msgBuffer[RING_IDX(read_Index+3)] << 24) |
+                                               (msgBuffer[RING_IDX(read_Index+2)] << 16) |
+                                               (msgBuffer[RING_IDX(read_Index+1)] << 8) |
+                                               (msgBuffer[RING_IDX(read_Index)]);
 
                         //Increment the pointer pass number of observations
                         for(int i=0; i<4; ++i)
                             RING_READ(read_Index,sz);
 
-                        gpsSats = 0;
-                        std::vector<unsigned short> *foundSVIDs = new std::vector<unsigned short>();
-                        for(int i=0; i<numObs; ++i)
+                        bool foundSats[32];
+
+
+                        for(unsigned int i=0; i<numObs; ++i)
                         {
                             RANGE rangeMSG;
                             ptr = (unsigned char*) &rangeMSG;
 
+
+                            int rangeSize = sizeof(RANGE);
                             // Read an observation
-                            for(int i=0; i<header.Message_Length; ++i)
+                            for(int i=0; i<rangeSize; ++i)
                             {
                                 *ptr = msgBuffer[RING_IDX(read_Index)];
                                 ptr++;
@@ -252,42 +260,21 @@ void messages::readAndProcess(QString inputFileName,
                             case 16://L1C(P)
                             case 17://L2C(M)
                             {
-                                bool found = false;
-                                foundSVIDs->push_back(rangeMSG.PRN_Slot);
-                                /*
-                                //Search the list to see if SVID is already present
-                                if(foundSVIDs.size() == 0)
-                                    foundSVIDs.push_back(rangeMSG.PRN_Slot);
-                                else
-                                {
-                                    for(std::vector<unsigned short>::iterator iter=foundSVIDs.begin(); iter < foundSVIDs.end(); iter++)
-                                    {
-
-                                        unsigned short val = (*iter);
-
-                                        if(val == rangeMSG.PRN_Slot)
-                                        {
-                                            found = true;
-                                            break;
-                                        }
-                                    }
-
-                                 //If the SVID is not already in list then insert at the end
-                                 if(!found)
-                                 {
-                                     foundSVIDs.push_back(rangeMSG.PRN_Slot);
-                                 }
-                                }*/
+                                foundSats[rangeMSG.PRN_Slot] = true;
                                  break;
                             }
                             default:
                                 break;
                             }
+                        }//for(unsigned int i=0; i<numObs; ++i)
 
-                            //Update the number of GPS satellites found
-                            gpsSats = foundSVIDs->size();
-                        }
-                        delete foundSVIDs;
+                        gpsSats = 0;
+
+                        //Update the number of GPS satellites found
+                        for(int i=0; i<32; ++i)
+                            if(foundSats[i])
+                                gpsSats++;
+
                         break;
                     }//case 43://RANGE
                     case 101://Time
@@ -319,7 +306,32 @@ void messages::readAndProcess(QString inputFileName,
                             RING_READ(read_Index, sz);
                         }//for(int i=0; i<headerSize; ++i)
 
-                        printf("E: %.9f, F: %.9f, G: %.9f\n", bestMSG.PX, bestMSG.PY, bestMSG.PZ);
+                        /*
+                         * Begin writing output records to outputfile
+                         * */
+                        double deltaE = bestMSG.PX-sensor.getPosE();
+                        double deltaF = bestMSG.PY-sensor.getPosF();
+                        double deltaG = bestMSG.PZ-sensor.getPosG();
+                        double deltaRSS = sqrt(deltaE*deltaE + deltaF*deltaF + deltaG*deltaG);;
+
+                        //fprintf(outputFile, "Time,UTC Time,Number of GPS Satellites,E,F,G,deltaE,deltaF,deltaG,deltaRSS\r\n");
+                        fprintf(outputFile, "%.6f,%.6f,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f\r\n",
+                                header.GPSec/1000.0,
+                                header.GPSec/1000.0+utc_Offset,
+                                gpsSats,
+                                bestMSG.PX,
+                                bestMSG.PY,
+                                bestMSG.PZ,
+                                deltaE,
+                                deltaF,
+                                deltaG,
+                                deltaRSS);
+
+                        fflush(outputFile);
+                        /*
+                         * End writing output records to outputfile
+                         * */
+
                         break;
 
 

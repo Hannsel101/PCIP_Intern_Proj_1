@@ -338,6 +338,7 @@ debug/moc_mainwindow.cpp: ../Project_1/mainwindow.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtCore/qwineventnotifier.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtCore/qxmlstream.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtCore/qtcoreversion.h \
+		../Project_1/myThread.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtWidgets/QMainWindow \
 		E:/Qt/5.15.0/mingw81_64/include/QtWidgets/qmainwindow.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtWidgets/qtwidgetsglobal.h \
@@ -584,6 +585,11 @@ debug/moc_myThread.cpp: ../Project_1/myThread.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtCore/qwineventnotifier.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtCore/qxmlstream.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtCore/qtcoreversion.h \
+		../Project_1/messages.h \
+		../Project_1/structs.h \
+		../Project_1/GPS_Sensor.h \
+		E:/Qt/5.15.0/mingw81_64/include/QtCore/QFile \
+		E:/Qt/5.15.0/mingw81_64/include/QtCore/QTextStream \
 		debug/moc_predefs.h \
 		E:/Qt/5.15.0/mingw81_64/bin/moc.exe
 	E:\Qt\5.15.0\mingw81_64\bin\moc.exe $(DEFINES) --include G:/GithubRepos/PCIP_Intern_Proj_1/build-Project_1-Desktop_Qt_5_15_0_MinGW_64_bit-Debug/debug/moc_predefs.h -IE:/Qt/5.15.0/mingw81_64/mkspecs/win32-g++ -IG:/GithubRepos/PCIP_Intern_Proj_1/Project_1 -IE:/Qt/5.15.0/mingw81_64/include -IE:/Qt/5.15.0/mingw81_64/include/QtWidgets -IE:/Qt/5.15.0/mingw81_64/include/QtGui -IE:/Qt/5.15.0/mingw81_64/include/QtANGLE -IE:/Qt/5.15.0/mingw81_64/include/QtCore -I. -IE:/Qt/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IE:/Qt/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IE:/Qt/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IE:/Qt/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IE:/Qt/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IE:/Qt/Tools/mingw810_64/x86_64-w64-mingw32/include ..\Project_1\myThread.h -o debug\moc_myThread.cpp
@@ -888,6 +894,7 @@ debug/main.o: ../Project_1/main.cpp ../Project_1/mainwindow.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtCore/qwineventnotifier.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtCore/qxmlstream.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtCore/qtcoreversion.h \
+		../Project_1/myThread.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtWidgets/QMainWindow \
 		E:/Qt/5.15.0/mingw81_64/include/QtWidgets/qmainwindow.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtWidgets/qtwidgetsglobal.h \
@@ -1142,6 +1149,7 @@ debug/mainwindow.o: ../Project_1/mainwindow.cpp ../Project_1/mainwindow.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtCore/qwineventnotifier.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtCore/qxmlstream.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtCore/qtcoreversion.h \
+		../Project_1/myThread.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtWidgets/QMainWindow \
 		E:/Qt/5.15.0/mingw81_64/include/QtWidgets/qmainwindow.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtWidgets/qtwidgetsglobal.h \
@@ -1387,7 +1395,10 @@ debug/messages.o: ../Project_1/messages.cpp ../Project_1/messages.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtCore/QDeadlineTimer \
 		E:/Qt/5.15.0/mingw81_64/include/QtCore/qwineventnotifier.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtCore/qxmlstream.h \
-		E:/Qt/5.15.0/mingw81_64/include/QtCore/qtcoreversion.h
+		E:/Qt/5.15.0/mingw81_64/include/QtCore/qtcoreversion.h \
+		../Project_1/GPS_Sensor.h \
+		E:/Qt/5.15.0/mingw81_64/include/QtCore/QFile \
+		E:/Qt/5.15.0/mingw81_64/include/QtCore/QTextStream
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\messages.o ..\Project_1\messages.cpp
 
 debug/myThread.o: ../Project_1/myThread.cpp ../Project_1/myThread.h \
@@ -1591,6 +1602,11 @@ debug/myThread.o: ../Project_1/myThread.cpp ../Project_1/myThread.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtCore/qwineventnotifier.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtCore/qxmlstream.h \
 		E:/Qt/5.15.0/mingw81_64/include/QtCore/qtcoreversion.h \
+		../Project_1/messages.h \
+		../Project_1/structs.h \
+		../Project_1/GPS_Sensor.h \
+		E:/Qt/5.15.0/mingw81_64/include/QtCore/QFile \
+		E:/Qt/5.15.0/mingw81_64/include/QtCore/QTextStream \
 		E:/Qt/5.15.0/mingw81_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\myThread.o ..\Project_1\myThread.cpp
 
