@@ -3,6 +3,7 @@
 
 #include "GPS_Sensor.h"
 #include "messages.h"
+#include "myThread.h"
 
 #include <QMainWindow>
 #include <QFile>
@@ -23,6 +24,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    myThread* mThread;
 
 private:
     bool checkPermissions(QFile *file, int fileType);
@@ -56,6 +58,8 @@ private:
      * fileType = the extension for the newly generated file
      * */
 
+public slots:
+    void onNumberChanged(int);
 
 private slots:
     void on_InputSearch_Button_clicked();
@@ -74,6 +78,10 @@ private slots:
 
 
     void on_antennaPosition_Button_clicked();
+
+    void on_startThread_Button_clicked();
+
+    void on_stopThread_Button_clicked();
 
 private:
     Ui::MainWindow *ui;

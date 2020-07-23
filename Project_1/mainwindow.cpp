@@ -7,6 +7,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    //Setup extra Thread
+    mThread = new myThread(this);
+    connect(mThread, SIGNAL(NumberChanged(int)), this, SLOT(onNumberChanged(int)));
+
     //Setting up the folder images for file search buttons
     QPixmap folderPixmap(":/images/images/folder.png");
     ui->InputSearch_Button->setIcon(folderPixmap);
@@ -185,7 +189,6 @@ void MainWindow::checkOutputFile()
 
         //create file and update text field
         //outputFile->open(QIODevice::WriteOnly);
-        qDebug() << endl << outputFileName << endl;
         ui->output_LineEdit->setText(outputFileName);
         ui->output_LineEdit->setStyleSheet("border: 1px solid green");
     }
@@ -268,4 +271,25 @@ void MainWindow::on_antennaPosition_Button_clicked()
     {
         qDebug("Invalid file name");
     }
+}
+//-----------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------//
+void MainWindow::onNumberChanged(int number)
+{
+    ui->endTime->setText(QString::number(number));
+}
+//-----------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------//
+void MainWindow::on_startThread_Button_clicked()
+{
+    //Start mThread
+    mThread->start();
+}
+//-----------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------//
+
+void MainWindow::on_stopThread_Button_clicked()
+{
+    //Stop mThread
+    mThread->Stop = true;
 }

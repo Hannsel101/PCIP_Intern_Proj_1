@@ -9,13 +9,12 @@ class myThread: public QThread
 public:
     explicit myThread(QObject *parent = 0);
     void run();
-    int getInt();
-    bool Stop();
+    bool Stop;
 
 public slots:
 
 signals:
-    void NumberChanged();
+    void NumberChanged(int);
 
 
 private:

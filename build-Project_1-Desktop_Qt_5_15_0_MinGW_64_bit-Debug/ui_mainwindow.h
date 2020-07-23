@@ -54,6 +54,8 @@ public:
     QLabel *recordsProcessed;
     QLabel *label;
     QFrame *line_2;
+    QPushButton *startThread_Button;
+    QPushButton *stopThread_Button;
     QSpacerItem *verticalSpacer_2;
     QLabel *log_Label;
     QLineEdit *Input_LineEdit;
@@ -255,6 +257,16 @@ public:
 
         verticalLayout_2->addWidget(line_2);
 
+        startThread_Button = new QPushButton(centralwidget);
+        startThread_Button->setObjectName(QString::fromUtf8("startThread_Button"));
+
+        verticalLayout_2->addWidget(startThread_Button);
+
+        stopThread_Button = new QPushButton(centralwidget);
+        stopThread_Button->setObjectName(QString::fromUtf8("stopThread_Button"));
+
+        verticalLayout_2->addWidget(stopThread_Button);
+
         verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout_2->addItem(verticalSpacer_2);
@@ -355,6 +367,8 @@ public:
         endTime->setText(QCoreApplication::translate("MainWindow", "End Time: ", nullptr));
         recordsProcessed->setText(QCoreApplication::translate("MainWindow", "Records Processed: ", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "% Records with RSS over 0.5m: ", nullptr));
+        startThread_Button->setText(QCoreApplication::translate("MainWindow", "Start Thread Debug", nullptr));
+        stopThread_Button->setText(QCoreApplication::translate("MainWindow", "Stop Thread Debug", nullptr));
         log_Label->setText(QCoreApplication::translate("MainWindow", "Log File", nullptr));
         Input_LineEdit->setInputMask(QString());
         Input_LineEdit->setText(QString());
