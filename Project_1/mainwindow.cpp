@@ -1,15 +1,22 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QFile>
-#include <QDir>
-#include <QMessageBox>
-#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    //Setting up the folder images for file search buttons
+    QPixmap folderPixmap(":/images/images/folder.png");
+    ui->InputSearch_Button->setIcon(folderPixmap);
+    ui->OutputSearch_Button->setIcon(folderPixmap);
+    ui->LogSearch_Button->setIcon(folderPixmap);
+
+    //Ensure only doubles are allowed in (E,F,G) coordinate input
+    ui->E_Input->setValidator(new QDoubleValidator(0,100,10,this));
+    ui->F_Input->setValidator(new QDoubleValidator(0,100,10,this));
+    ui->G_Input->setValidator(new QDoubleValidator(0,100,10,this));
 
     //Set pointers to null
     inputFile = nullptr;
@@ -61,10 +68,11 @@ bool MainWindow::checkPermissions(QFile *file, int fileType)
     {
         if(file->exists())
         {
-            if(!file->open(QFile::WriteOnly | QFile::Text))
+            if(!file->open(QFile::ReadOnly))
             {
                 return false;
             }
+            file->close();
             return true;
         }
         return false;
@@ -73,25 +81,22 @@ bool MainWindow::checkPermissions(QFile *file, int fileType)
     {
         if(file->exists())
         {
-            if(!file->open(QFile::ReadOnly | QFile::Text))
+            if(!file->open(QFile::WriteOnly | QFile::Text))
             {
                 return false;
             }
+
+            file->close();
             return true;
+
         }
-        else
-        {
-            return false;
-        }
+        return true;
+        //else
+        //{
+          //  return false;
+        //}
     }
-    else if(fileType == 2)//Log file
-    {
-        return false;//placeholder
-    }
-    else
-    {
-        return false;
-    }
+
 }
 //-----------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------//
@@ -107,128 +112,40 @@ void MainWindow::on_process_Button_clicked()
     {
         //Open input file and check permissions
         inputFile = new QFile(inputFileName);
-        if(!checkPermissions(inputFile, 0))
+        if(!checkPermissions(inputFile, 0))//Failed the permissions check
         {
             QMessageBox::warning(this, "Permissions Error", "Invalid input file!");
             ui->Input_LineEdit->setStyleSheet("border: 1px solid red");
         }
-        else
+        else//Passed the permissions check
         {
+
+            //Update the GUI and check for the output and log file text entry fields
             ui->Input_LineEdit->setStyleSheet("border: 1px solid green");
+            checkOutputFile();
+            checkLogFile();
 
-            //Check if an output and log file have been specified or will be generated based on input
-            if(outputFileName.length() > 0)
+            //For Debugging**************************************
+            //****************************************************
+            messages mes1;
+            mes1.readAndProcess(inputFileName, outputFileName, logFileName);
+            //For Debugging**************************************
+            //****************************************************
+
+            if((ui->E_Input->text() > 0) && (ui->F_Input->text() > 0) && (ui->G_Input->text() > 0))
             {
-                outputFile = new QFile(outputFileName);
-                if(!checkPermissions(outputFile, 1))
-                {
-                    QMessageBox::warning(this, "Permissions Error", "Please select a different output file");
-                    ui->output_LineEdit->setStyleSheet("border: 1px solid red");
-                }
-                else
-                {
-                    ui->output_LineEdit->setStyleSheet("border: 1px solid green");
-                }
+                double E = ui->E_Input->text().toDouble();
+                double F = ui->F_Input->text().toDouble();
+                double G = ui->G_Input->text().toDouble();
+                sensor.setPos(E, F, G);
+                QString valueAsString = QString::number(E);
+                ui->endTime->setText(valueAsString);
             }
-            else//Generate an output file based on input
+            else
             {
-                outputFileName = generateOutputFile(inputFileName, "Output.txt");
-
-                if(outputFile != nullptr)
-                {
-                    outputFile->close();
-                    outputFile=nullptr;
-                }
-
-                outputFile = new QFile(outputFileName);
-                int currentIndex = outputFileName.length()-1;
-                for(;currentIndex>0; --currentIndex)
-                {
-                    if(outputFileName.at(currentIndex) == '.')
-                    {
-                        break;
-                    }
-                }
-                char nameInt = '0';
-                while(outputFile->exists())
-                {
-                    if(nameInt == '0')//If first run through the loop
-                    {
-                        nameInt++;
-                        outputFileName.insert(currentIndex, nameInt);
-                    }
-                    else
-                    {
-                        outputFile->close();
-                        outputFile = nullptr;
-                        outputFileName.replace(currentIndex, 1, nameInt);
-                        outputFile = new QFile(outputFileName);
-                        nameInt++;
-                    }
-
-                }
-                //create file and update text field
-                outputFile->open(QIODevice::WriteOnly);
-                ui->output_LineEdit->setText(outputFileName);
+                //Prompt the user to select an input file
+                MainWindow::on_antennaPosition_Button_clicked();
             }
-
-
-            //Check if a log file has been selected
-            if(logFileName.length() > 0)
-            {
-                logFile = new QFile(logFileName);
-
-                if(!checkPermissions(logFile,1))//Check the permissions of the selected log file
-                {
-                    QMessageBox::warning(this, "Permissions Error", "Please select a different log file");
-                    ui->log_LineEdit->setStyleSheet("border: 1px solid red");
-                }
-                else
-                {
-                    ui->log_LineEdit->setStyleSheet("border: 1px solid green");
-                }
-            }
-            else//Generate a log file based on input file name
-            {
-                logFileName = generateOutputFile(inputFileName, "Log.txt");
-
-                if(logFile != nullptr)
-                {
-                    logFile->close();
-                    logFile=nullptr;
-                }
-
-                logFile = new QFile(logFileName);
-                int currentIndex = logFileName.length()-1;
-                for(;currentIndex>0; --currentIndex)
-                {
-                    if(logFileName.at(currentIndex) == '.')
-                    {
-                        break;
-                    }
-                }
-                char nameInt = '0';
-                while(logFile->exists())
-                {
-                    if(nameInt == '0')//If first run through the loop
-                    {
-                        nameInt++;
-                        logFileName.insert(currentIndex, nameInt);
-                    }
-                    else
-                    {
-                        logFile->close();
-                        logFile = nullptr;
-                        logFileName.replace(currentIndex, 1, nameInt);
-                        logFile = new QFile(logFileName);
-                        nameInt++;
-                    }
-
-                }
-                //create file and update text field
-                logFile->open(QIODevice::WriteOnly);
-                ui->log_LineEdit->setText(logFileName);
-            }//End Generate log file
         }
     }
     else
@@ -237,6 +154,74 @@ void MainWindow::on_process_Button_clicked()
         ui->log_LineEdit->setStyleSheet("");
         ui->output_LineEdit->setStyleSheet("");
     }
+}
+//-----------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------//
+void MainWindow::checkOutputFile()
+{
+    //Check if an output file has been specified or will be generated based on input
+    if(outputFileName.length() > 0)
+    {
+        outputFile = new QFile(outputFileName);
+        if(!checkPermissions(outputFile, 1))
+        {
+            QMessageBox::warning(this, "Permissions Error", "Please select a different output file");
+            ui->output_LineEdit->setStyleSheet("border: 1px solid red");
+        }
+        else
+        {
+            ui->output_LineEdit->setStyleSheet("border: 1px solid green");
+        }
+    }
+    else//Generate an output file based on input
+    {
+        outputFileName = generateOutputFile(inputFileName, "Output.txt");
+
+        if(outputFile != nullptr)
+        {
+            outputFile->close();
+            outputFile=nullptr;
+        }
+
+        //create file and update text field
+        //outputFile->open(QIODevice::WriteOnly);
+        qDebug() << endl << outputFileName << endl;
+        ui->output_LineEdit->setText(outputFileName);
+        ui->output_LineEdit->setStyleSheet("border: 1px solid green");
+    }
+}
+//-----------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------//
+void MainWindow::checkLogFile()
+{
+    //Check if a log file has been selected
+    if(logFileName.length() > 0)
+    {
+        logFile = new QFile(logFileName);
+
+        if(!checkPermissions(logFile,1))//Check the permissions of the selected log file
+        {
+            QMessageBox::warning(this, "Permissions Error", "Please select a different log file");
+            ui->log_LineEdit->setStyleSheet("border: 1px solid red");
+        }
+        else
+        {
+            ui->log_LineEdit->setStyleSheet("border: 1px solid green");
+        }
+    }
+    else//Generate a log file based on input file name
+    {
+        logFileName = generateOutputFile(inputFileName, "Log.txt");
+
+        if(logFile != nullptr)
+        {
+            logFile->close();
+            logFile=nullptr;
+        }
+
+        ui->log_LineEdit->setText(logFileName);
+        ui->log_LineEdit->setStyleSheet("border: 1px solid green");
+    }//End Generate log file
 }
 //-----------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------//
@@ -251,5 +236,36 @@ QString MainWindow::generateOutputFile(QString inputPath, QString fileType)
             inputPath.append("_" + fileType);
             return inputPath;
         }
+    }
+    return "";
+}
+//-----------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------//
+void MainWindow::on_antennaPosition_Button_clicked()
+{
+    QString antennaFileName = QFileDialog::getOpenFileName(this, "Open a file", QDir::homePath());
+    bool test = sensor.setFile(antennaFileName);
+
+    if(test)
+    {
+        if(sensor.extractPos())
+        {
+            QStringList line = sensor.getDebug().split(',');
+            sensor.setPos(line[0].toDouble(), line[1].toDouble(), 0);
+            QString conversion = QString::number(sensor.getPosE());
+            ui->E_Input->setText(conversion);
+
+            conversion = QString::number(sensor.getPosF());
+            ui->F_Input->setText(conversion);
+
+        }
+        else
+        {
+            qDebug("Wrong file format!");
+        }
+    }
+    else
+    {
+        qDebug("Invalid file name");
     }
 }

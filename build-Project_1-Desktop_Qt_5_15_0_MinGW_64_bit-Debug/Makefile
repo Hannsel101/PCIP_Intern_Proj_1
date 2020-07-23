@@ -277,7 +277,8 @@ Makefile: ../Project_1/Project_1.pro E:/Qt/5.15.0/mingw81_64/mkspecs/win32-g++/q
 		E:/Qt/5.15.0/mingw81_64/lib/Qt5Gui.prl \
 		E:/Qt/5.15.0/mingw81_64/lib/Qt5Core.prl \
 		E:/Qt/5.15.0/mingw81_64/lib/qtmain.prl \
-		E:/Qt/5.15.0/mingw81_64/mkspecs/features/build_pass.prf
+		E:/Qt/5.15.0/mingw81_64/mkspecs/features/build_pass.prf \
+		../Project_1/Resources.qrc
 	$(QMAKE) -o Makefile ..\Project_1\Project_1.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 E:/Qt/5.15.0/mingw81_64/mkspecs/features/spec_pre.prf:
 E:/Qt/5.15.0/mingw81_64/mkspecs/qdevice.pri:
@@ -487,6 +488,7 @@ E:/Qt/5.15.0/mingw81_64/lib/Qt5Gui.prl:
 E:/Qt/5.15.0/mingw81_64/lib/Qt5Core.prl:
 E:/Qt/5.15.0/mingw81_64/lib/qtmain.prl:
 E:/Qt/5.15.0/mingw81_64/mkspecs/features/build_pass.prf:
+../Project_1/Resources.qrc:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ..\Project_1\Project_1.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 

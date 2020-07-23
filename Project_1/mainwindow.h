@@ -1,8 +1,15 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "GPS_Sensor.h"
+#include "messages.h"
+
 #include <QMainWindow>
 #include <QFile>
+#include <QDir>
+#include <QMessageBox>
+#include <QFileDialog>
+#include <QDoubleValidator>
 
 
 QT_BEGIN_NAMESPACE
@@ -27,6 +34,17 @@ private:
      * file = a pointer to a file specified by the user during runtime
      * fileType = an integer that accepts "0" for input files and "1"
      *            for output files.
+     * */
+
+    void checkOutputFile();
+    void checkLogFile();
+    /*
+     * The check""File() functions run through a series of checks to
+     * ensure that a suitable input/output/log file has been selected.
+     *
+     * If no output/log file has been selected then one will be generated
+     * for the user automatically in the same directory as the selected
+     * input file.
      * */
 
     QString generateOutputFile(QString inputPath, QString fileType);
@@ -55,6 +73,8 @@ private slots:
     //else if no file is selected for the
 
 
+    void on_antennaPosition_Button_clicked();
+
 private:
     Ui::MainWindow *ui;
     QFile *inputFile;
@@ -63,5 +83,6 @@ private:
     QString inputFileName = "";
     QString outputFileName = "";
     QString logFileName = "";
+    GPS_Sensor sensor;
 };
 #endif // MAINWINDOW_H
