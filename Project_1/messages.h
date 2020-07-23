@@ -16,10 +16,11 @@ public:
 
     messages();
     ~messages();
+
 private:
-    NovaHeader nova_msg;
-    unsigned char *sync_ptr;
-    unsigned char *msg_ptr;
+    bool checkIndexes(int read_Index, int write_Index, int count);
+    double utc_Offset;
+    unsigned int gpsSats;
 
 };
 

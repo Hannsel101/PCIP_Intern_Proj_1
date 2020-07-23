@@ -32,8 +32,6 @@ public:
     QWidget *centralwidget;
     QGridLayout *gridLayout;
     QVBoxLayout *verticalLayout_2;
-    QPushButton *process_Button;
-    QSpacerItem *verticalSpacer_3;
     QFrame *line_4;
     QLabel *label_9;
     QHBoxLayout *horizontalLayout_4;
@@ -47,6 +45,8 @@ public:
     QLabel *label_8;
     QPushButton *antennaPosition_Button;
     QSpacerItem *verticalSpacer;
+    QFrame *line_3;
+    QPushButton *process_Button;
     QFrame *line;
     QLabel *processingInformationHeader;
     QLabel *label_2;
@@ -89,22 +89,6 @@ public:
         gridLayout->setContentsMargins(-1, 0, -1, -1);
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
-        process_Button = new QPushButton(centralwidget);
-        process_Button->setObjectName(QString::fromUtf8("process_Button"));
-        process_Button->setMinimumSize(QSize(0, 30));
-        process_Button->setMaximumSize(QSize(100, 16777215));
-        QFont font;
-        font.setPointSize(10);
-        font.setBold(false);
-        font.setWeight(50);
-        process_Button->setFont(font);
-
-        verticalLayout_2->addWidget(process_Button, 0, Qt::AlignHCenter);
-
-        verticalSpacer_3 = new QSpacerItem(20, 5, QSizePolicy::Minimum, QSizePolicy::Fixed);
-
-        verticalLayout_2->addItem(verticalSpacer_3);
-
         line_4 = new QFrame(centralwidget);
         line_4->setObjectName(QString::fromUtf8("line_4"));
         line_4->setFrameShadow(QFrame::Sunken);
@@ -114,12 +98,12 @@ public:
 
         label_9 = new QLabel(centralwidget);
         label_9->setObjectName(QString::fromUtf8("label_9"));
-        QFont font1;
-        font1.setPointSize(10);
-        font1.setBold(true);
-        font1.setUnderline(true);
-        font1.setWeight(75);
-        label_9->setFont(font1);
+        QFont font;
+        font.setPointSize(10);
+        font.setBold(true);
+        font.setUnderline(true);
+        font.setWeight(75);
+        label_9->setFont(font);
         label_9->setAlignment(Qt::AlignCenter);
 
         verticalLayout_2->addWidget(label_9);
@@ -130,9 +114,9 @@ public:
         label_4 = new QLabel(centralwidget);
         label_4->setObjectName(QString::fromUtf8("label_4"));
         label_4->setMaximumSize(QSize(110, 16777215));
-        QFont font2;
-        font2.setPointSize(10);
-        label_4->setFont(font2);
+        QFont font1;
+        font1.setPointSize(10);
+        label_4->setFont(font1);
         label_4->setAlignment(Qt::AlignCenter);
 
         horizontalLayout_4->addWidget(label_4);
@@ -140,7 +124,7 @@ public:
         label_5 = new QLabel(centralwidget);
         label_5->setObjectName(QString::fromUtf8("label_5"));
         label_5->setMaximumSize(QSize(5, 16777215));
-        label_5->setFont(font2);
+        label_5->setFont(font1);
         label_5->setAlignment(Qt::AlignCenter);
 
         horizontalLayout_4->addWidget(label_5);
@@ -155,7 +139,7 @@ public:
         label_6 = new QLabel(centralwidget);
         label_6->setObjectName(QString::fromUtf8("label_6"));
         label_6->setMaximumSize(QSize(5, 16777215));
-        label_6->setFont(font2);
+        label_6->setFont(font1);
         label_6->setAlignment(Qt::AlignCenter);
 
         horizontalLayout_4->addWidget(label_6);
@@ -170,7 +154,7 @@ public:
         label_7 = new QLabel(centralwidget);
         label_7->setObjectName(QString::fromUtf8("label_7"));
         label_7->setMaximumSize(QSize(5, 16777215));
-        label_7->setFont(font2);
+        label_7->setFont(font1);
         label_7->setAlignment(Qt::AlignCenter);
 
         horizontalLayout_4->addWidget(label_7);
@@ -185,7 +169,7 @@ public:
         label_8 = new QLabel(centralwidget);
         label_8->setObjectName(QString::fromUtf8("label_8"));
         label_8->setMaximumSize(QSize(5, 16777215));
-        label_8->setFont(font2);
+        label_8->setFont(font1);
         label_8->setAlignment(Qt::AlignCenter);
 
         horizontalLayout_4->addWidget(label_8);
@@ -198,13 +182,32 @@ public:
         antennaPosition_Button->setMinimumSize(QSize(100, 30));
         antennaPosition_Button->setMaximumSize(QSize(100, 16777215));
         antennaPosition_Button->setBaseSize(QSize(0, 0));
-        antennaPosition_Button->setFont(font2);
+        antennaPosition_Button->setFont(font1);
 
         verticalLayout_2->addWidget(antennaPosition_Button, 0, Qt::AlignHCenter);
 
         verticalSpacer = new QSpacerItem(20, 5, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         verticalLayout_2->addItem(verticalSpacer);
+
+        line_3 = new QFrame(centralwidget);
+        line_3->setObjectName(QString::fromUtf8("line_3"));
+        line_3->setFrameShape(QFrame::HLine);
+        line_3->setFrameShadow(QFrame::Sunken);
+
+        verticalLayout_2->addWidget(line_3);
+
+        process_Button = new QPushButton(centralwidget);
+        process_Button->setObjectName(QString::fromUtf8("process_Button"));
+        process_Button->setMinimumSize(QSize(0, 30));
+        process_Button->setMaximumSize(QSize(100, 16777215));
+        QFont font2;
+        font2.setPointSize(10);
+        font2.setBold(false);
+        font2.setWeight(50);
+        process_Button->setFont(font2);
+
+        verticalLayout_2->addWidget(process_Button, 0, Qt::AlignHCenter);
 
         line = new QFrame(centralwidget);
         line->setObjectName(QString::fromUtf8("line"));
@@ -215,7 +218,7 @@ public:
 
         processingInformationHeader = new QLabel(centralwidget);
         processingInformationHeader->setObjectName(QString::fromUtf8("processingInformationHeader"));
-        processingInformationHeader->setFont(font1);
+        processingInformationHeader->setFont(font);
         processingInformationHeader->setAlignment(Qt::AlignCenter);
         processingInformationHeader->setIndent(100);
 
@@ -223,25 +226,25 @@ public:
 
         label_2 = new QLabel(centralwidget);
         label_2->setObjectName(QString::fromUtf8("label_2"));
-        label_2->setFont(font2);
+        label_2->setFont(font1);
 
         verticalLayout_2->addWidget(label_2);
 
         endTime = new QLabel(centralwidget);
         endTime->setObjectName(QString::fromUtf8("endTime"));
-        endTime->setFont(font2);
+        endTime->setFont(font1);
 
         verticalLayout_2->addWidget(endTime);
 
         recordsProcessed = new QLabel(centralwidget);
         recordsProcessed->setObjectName(QString::fromUtf8("recordsProcessed"));
-        recordsProcessed->setFont(font2);
+        recordsProcessed->setFont(font1);
 
         verticalLayout_2->addWidget(recordsProcessed);
 
         label = new QLabel(centralwidget);
         label->setObjectName(QString::fromUtf8("label"));
-        label->setFont(font2);
+        label->setFont(font1);
 
         verticalLayout_2->addWidget(label);
 
@@ -261,7 +264,7 @@ public:
 
         log_Label = new QLabel(centralwidget);
         log_Label->setObjectName(QString::fromUtf8("log_Label"));
-        log_Label->setFont(font2);
+        log_Label->setFont(font1);
 
         gridLayout->addWidget(log_Label, 2, 0, 1, 1);
 
@@ -273,14 +276,14 @@ public:
 
         output_Label = new QLabel(centralwidget);
         output_Label->setObjectName(QString::fromUtf8("output_Label"));
-        output_Label->setFont(font2);
+        output_Label->setFont(font1);
 
         gridLayout->addWidget(output_Label, 1, 0, 1, 1);
 
         Input_Label = new QLabel(centralwidget);
         Input_Label->setObjectName(QString::fromUtf8("Input_Label"));
         Input_Label->setMinimumSize(QSize(0, 0));
-        Input_Label->setFont(font2);
+        Input_Label->setFont(font1);
 
         gridLayout->addWidget(Input_Label, 0, 0, 1, 1);
 
@@ -322,7 +325,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 316, 21));
+        menubar->setGeometry(QRect(0, 0, 316, 20));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -336,7 +339,6 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
-        process_Button->setText(QCoreApplication::translate("MainWindow", "Start Processing", nullptr));
         label_9->setText(QCoreApplication::translate("MainWindow", "GPS Antenna Position", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "ECEF Coordinates:", nullptr));
         label_5->setText(QCoreApplication::translate("MainWindow", "(", nullptr));
@@ -347,6 +349,7 @@ public:
         G_Input->setPlaceholderText(QCoreApplication::translate("MainWindow", "G", nullptr));
         label_8->setText(QCoreApplication::translate("MainWindow", ")", nullptr));
         antennaPosition_Button->setText(QCoreApplication::translate("MainWindow", "Load Position", nullptr));
+        process_Button->setText(QCoreApplication::translate("MainWindow", "Start Processing", nullptr));
         processingInformationHeader->setText(QCoreApplication::translate("MainWindow", "Processing Information", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "Start Time:", nullptr));
         endTime->setText(QCoreApplication::translate("MainWindow", "End Time: ", nullptr));

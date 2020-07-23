@@ -141,6 +141,11 @@ void MainWindow::on_process_Button_clicked()
                 QString valueAsString = QString::number(E);
                 ui->endTime->setText(valueAsString);
             }
+            else
+            {
+                //Prompt the user to select an input file
+                MainWindow::on_antennaPosition_Button_clicked();
+            }
         }
     }
     else
@@ -245,15 +250,6 @@ void MainWindow::on_antennaPosition_Button_clicked()
     {
         if(sensor.extractPos())
         {
-            //QString updateGUI = QString::number(sensor.getPosE());
-            //ui->E_Input->setText(updateGUI);
-
-            //updateGUI = QString::number(sensor.getPosF());
-            //ui->F_Input->setText(updateGUI);
-
-            //updateGUI = QString::number(sensor.getPosG());
-            //ui->G_Input->setText(updateGUI);
-
             QStringList line = sensor.getDebug().split(',');
             sensor.setPos(line[0].toDouble(), line[1].toDouble(), 0);
             QString conversion = QString::number(sensor.getPosE());
@@ -272,8 +268,4 @@ void MainWindow::on_antennaPosition_Button_clicked()
     {
         qDebug("Invalid file name");
     }
-
-    //messages message1;
-    //char msgBuf[1024];
-    //message1.readIntoBuffer(msgBuf);
 }
