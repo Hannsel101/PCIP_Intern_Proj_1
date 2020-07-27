@@ -154,6 +154,14 @@ void MainWindow::on_process_Button_clicked()
             {
                 //Prompt the user to select an input file
                 MainWindow::on_antennaPosition_Button_clicked();
+
+                if((ui->E_Input->text() > 0) && (ui->F_Input->text() > 0) && (ui->G_Input->text() > 0))
+                {
+                    //Start processing thread
+                    mThread->start();
+
+                    //Update GUI
+                }
             }
         }
     }
@@ -289,18 +297,4 @@ void MainWindow::onNumberChanged(int number)
 {
     ui->endTime->setText(QString::number(number));
 }
-//-----------------------------------------------------------------------------------------------//
-//-----------------------------------------------------------------------------------------------//
-void MainWindow::on_startThread_Button_clicked()
-{
-    //Start mThread
-    mThread->start();
-}
-//-----------------------------------------------------------------------------------------------//
-//-----------------------------------------------------------------------------------------------//
 
-void MainWindow::on_stopThread_Button_clicked()
-{
-    //Stop mThread
-    mThread->Stop = true;
-}

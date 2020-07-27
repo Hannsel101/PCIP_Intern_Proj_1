@@ -79,9 +79,6 @@ private slots:
 
     void on_antennaPosition_Button_clicked();
 
-    void on_startThread_Button_clicked();
-
-    void on_stopThread_Button_clicked();
 
 private:
     Ui::MainWindow *ui;

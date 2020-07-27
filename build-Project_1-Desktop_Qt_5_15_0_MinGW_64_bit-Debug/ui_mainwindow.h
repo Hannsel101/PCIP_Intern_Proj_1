@@ -13,7 +13,6 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
-#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
@@ -34,15 +33,9 @@ public:
     QVBoxLayout *verticalLayout_2;
     QFrame *line_4;
     QLabel *label_9;
-    QHBoxLayout *horizontalLayout_4;
-    QLabel *label_4;
-    QLabel *label_5;
     QLineEdit *E_Input;
-    QLabel *label_6;
     QLineEdit *F_Input;
-    QLabel *label_7;
     QLineEdit *G_Input;
-    QLabel *label_8;
     QPushButton *antennaPosition_Button;
     QSpacerItem *verticalSpacer;
     QFrame *line_3;
@@ -54,9 +47,6 @@ public:
     QLabel *recordsProcessed;
     QLabel *label;
     QFrame *line_2;
-    QPushButton *startThread_Button;
-    QPushButton *stopThread_Button;
-    QSpacerItem *verticalSpacer_2;
     QLabel *log_Label;
     QLineEdit *Input_LineEdit;
     QLabel *output_Label;
@@ -73,7 +63,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(316, 483);
+        MainWindow->resize(316, 490);
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -110,80 +100,42 @@ public:
 
         verticalLayout_2->addWidget(label_9);
 
-        horizontalLayout_4 = new QHBoxLayout();
-        horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
-        horizontalLayout_4->setContentsMargins(-1, 10, -1, -1);
-        label_4 = new QLabel(centralwidget);
-        label_4->setObjectName(QString::fromUtf8("label_4"));
-        label_4->setMaximumSize(QSize(110, 16777215));
-        QFont font1;
-        font1.setPointSize(10);
-        label_4->setFont(font1);
-        label_4->setAlignment(Qt::AlignCenter);
-
-        horizontalLayout_4->addWidget(label_4);
-
-        label_5 = new QLabel(centralwidget);
-        label_5->setObjectName(QString::fromUtf8("label_5"));
-        label_5->setMaximumSize(QSize(5, 16777215));
-        label_5->setFont(font1);
-        label_5->setAlignment(Qt::AlignCenter);
-
-        horizontalLayout_4->addWidget(label_5);
-
         E_Input = new QLineEdit(centralwidget);
         E_Input->setObjectName(QString::fromUtf8("E_Input"));
+        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(E_Input->sizePolicy().hasHeightForWidth());
+        E_Input->setSizePolicy(sizePolicy1);
         E_Input->setMinimumSize(QSize(0, 25));
-        E_Input->setMaximumSize(QSize(30, 16777215));
+        E_Input->setMaximumSize(QSize(1000, 16777215));
+        E_Input->setAlignment(Qt::AlignCenter);
 
-        horizontalLayout_4->addWidget(E_Input);
-
-        label_6 = new QLabel(centralwidget);
-        label_6->setObjectName(QString::fromUtf8("label_6"));
-        label_6->setMaximumSize(QSize(5, 16777215));
-        label_6->setFont(font1);
-        label_6->setAlignment(Qt::AlignCenter);
-
-        horizontalLayout_4->addWidget(label_6);
+        verticalLayout_2->addWidget(E_Input);
 
         F_Input = new QLineEdit(centralwidget);
         F_Input->setObjectName(QString::fromUtf8("F_Input"));
         F_Input->setMinimumSize(QSize(0, 25));
-        F_Input->setMaximumSize(QSize(30, 16777215));
+        F_Input->setMaximumSize(QSize(1000, 16777215));
+        F_Input->setAlignment(Qt::AlignCenter);
 
-        horizontalLayout_4->addWidget(F_Input);
-
-        label_7 = new QLabel(centralwidget);
-        label_7->setObjectName(QString::fromUtf8("label_7"));
-        label_7->setMaximumSize(QSize(5, 16777215));
-        label_7->setFont(font1);
-        label_7->setAlignment(Qt::AlignCenter);
-
-        horizontalLayout_4->addWidget(label_7);
+        verticalLayout_2->addWidget(F_Input);
 
         G_Input = new QLineEdit(centralwidget);
         G_Input->setObjectName(QString::fromUtf8("G_Input"));
         G_Input->setMinimumSize(QSize(0, 25));
-        G_Input->setMaximumSize(QSize(30, 16777215));
+        G_Input->setMaximumSize(QSize(1000, 16777215));
+        G_Input->setAlignment(Qt::AlignCenter);
 
-        horizontalLayout_4->addWidget(G_Input);
-
-        label_8 = new QLabel(centralwidget);
-        label_8->setObjectName(QString::fromUtf8("label_8"));
-        label_8->setMaximumSize(QSize(5, 16777215));
-        label_8->setFont(font1);
-        label_8->setAlignment(Qt::AlignCenter);
-
-        horizontalLayout_4->addWidget(label_8);
-
-
-        verticalLayout_2->addLayout(horizontalLayout_4);
+        verticalLayout_2->addWidget(G_Input);
 
         antennaPosition_Button = new QPushButton(centralwidget);
         antennaPosition_Button->setObjectName(QString::fromUtf8("antennaPosition_Button"));
         antennaPosition_Button->setMinimumSize(QSize(100, 30));
         antennaPosition_Button->setMaximumSize(QSize(100, 16777215));
         antennaPosition_Button->setBaseSize(QSize(0, 0));
+        QFont font1;
+        font1.setPointSize(10);
         antennaPosition_Button->setFont(font1);
 
         verticalLayout_2->addWidget(antennaPosition_Button, 0, Qt::AlignHCenter);
@@ -256,20 +208,6 @@ public:
         line_2->setFrameShadow(QFrame::Sunken);
 
         verticalLayout_2->addWidget(line_2);
-
-        startThread_Button = new QPushButton(centralwidget);
-        startThread_Button->setObjectName(QString::fromUtf8("startThread_Button"));
-
-        verticalLayout_2->addWidget(startThread_Button);
-
-        stopThread_Button = new QPushButton(centralwidget);
-        stopThread_Button->setObjectName(QString::fromUtf8("stopThread_Button"));
-
-        verticalLayout_2->addWidget(stopThread_Button);
-
-        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        verticalLayout_2->addItem(verticalSpacer_2);
 
 
         gridLayout->addLayout(verticalLayout_2, 3, 0, 1, 4);
@@ -352,14 +290,9 @@ public:
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
         label_9->setText(QCoreApplication::translate("MainWindow", "GPS Antenna Position", nullptr));
-        label_4->setText(QCoreApplication::translate("MainWindow", "ECEF Coordinates:", nullptr));
-        label_5->setText(QCoreApplication::translate("MainWindow", "(", nullptr));
         E_Input->setPlaceholderText(QCoreApplication::translate("MainWindow", "E", nullptr));
-        label_6->setText(QCoreApplication::translate("MainWindow", ",", nullptr));
         F_Input->setPlaceholderText(QCoreApplication::translate("MainWindow", "F", nullptr));
-        label_7->setText(QCoreApplication::translate("MainWindow", ",", nullptr));
         G_Input->setPlaceholderText(QCoreApplication::translate("MainWindow", "G", nullptr));
-        label_8->setText(QCoreApplication::translate("MainWindow", ")", nullptr));
         antennaPosition_Button->setText(QCoreApplication::translate("MainWindow", "Load Position", nullptr));
         process_Button->setText(QCoreApplication::translate("MainWindow", "Start Processing", nullptr));
         processingInformationHeader->setText(QCoreApplication::translate("MainWindow", "Processing Information", nullptr));
@@ -367,8 +300,6 @@ public:
         endTime->setText(QCoreApplication::translate("MainWindow", "End Time: ", nullptr));
         recordsProcessed->setText(QCoreApplication::translate("MainWindow", "Records Processed: ", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "% Records with RSS over 0.5m: ", nullptr));
-        startThread_Button->setText(QCoreApplication::translate("MainWindow", "Start Thread Debug", nullptr));
-        stopThread_Button->setText(QCoreApplication::translate("MainWindow", "Stop Thread Debug", nullptr));
         log_Label->setText(QCoreApplication::translate("MainWindow", "Log File", nullptr));
         Input_LineEdit->setInputMask(QString());
         Input_LineEdit->setText(QString());
