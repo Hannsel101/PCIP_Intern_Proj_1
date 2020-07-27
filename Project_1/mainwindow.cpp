@@ -258,14 +258,20 @@ void MainWindow::on_antennaPosition_Button_clicked()
     {
         if(sensor.extractPos())
         {
+            //Split the input from the position file into three comma seperated numbers
             QStringList line = sensor.getDebug().split(',');
-            sensor.setPos(line[0].toDouble(), line[1].toDouble(), 0);
+            sensor.setPos(line[0].toDouble(), line[1].toDouble(), line[2].toDouble());
+
+            //Update the text entry fields corresponding with ECEF(E, F, G) coordinates
+            //to show the extracted comma seperated values
             QString conversion = QString::number(sensor.getPosE());
             ui->E_Input->setText(conversion);
 
             conversion = QString::number(sensor.getPosF());
             ui->F_Input->setText(conversion);
 
+            conversion = QString::number(sensor.getPosG());
+            ui->G_Input->setText(conversion);
         }
         else
         {

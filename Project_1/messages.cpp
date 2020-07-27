@@ -64,7 +64,7 @@ unsigned long CalculateBlockCRC32( unsigned long ulCount, unsigned char
         ulTemp1 = ( ulCRC >> 8 ) & 0x00FFFFFFL;
         ulTemp2 = CRC32Value( ((int) ulCRC ^ ucBuffer[t] ) & 0xFF );
         ulCRC = ulTemp1 ^ ulTemp2;
-        RING_IDX(++currIdx);
+        currIdx = RING_IDX(++currIdx);
     }
     return( ulCRC );
 }
@@ -120,11 +120,9 @@ void messages::readAndProcess(QString inputFileName,
             if(!lastRead && (sz < CHUNK_SIZE))
             {
 
+                printf("Reading Chunk\r\n");
                 for(int k=0; k<CHUNK_SIZE; ++k)
                 {
-                    int filepos = ftell(inputFile);
-                    printf("File Position: %d\r\n", filepos);
-
                     //Read up to 4096 bytes out of the input file stream
                     numread = fread(&msgBuffer[write_Index], 1, 1, inputFile);
 
@@ -139,6 +137,8 @@ void messages::readAndProcess(QString inputFileName,
                         RING_WRITE(write_Index, sz);
                     }
                 }//for(int k=0; k<CHUNK_SIZE; ++k)
+
+                printf("Size !lastRead: %d\r\n", sz);
             }
             /*
              * READING DONE
@@ -156,7 +156,11 @@ void messages::readAndProcess(QString inputFileName,
 
                     //End condition
                     if(!checkIndexes(read_Index, write_Index, 3))
+                    {
+                        if(lastRead)
+                            DONE = true;
                         break;
+                    }
 
                     if((msgBuffer[RING_IDX(read_Index)] != 0xAA) ||
                             (msgBuffer[RING_IDX(read_Index+1)] != 0x44) ||
@@ -175,7 +179,11 @@ void messages::readAndProcess(QString inputFileName,
 
 
                     if(!checkIndexes(read_Index, write_Index, headerSize))
+                    {
+                        if(lastRead)
+                            DONE = true;
                         break;
+                    }
 
 
                     for(int i=0; i<headerSize; ++i)
@@ -189,9 +197,12 @@ void messages::readAndProcess(QString inputFileName,
                     /*
                      * CHECKSUM CHECKING
                      * */
+
                     //Check if there is enough space between read and write pointer for CRC check
                     if(!checkIndexes(read_Index, write_Index, header.Message_Length+4))
                     {
+                        if(lastRead)
+                            DONE = true;
                         read_Index = syncPos;
                         break;
                     }
@@ -230,7 +241,6 @@ void messages::readAndProcess(QString inputFileName,
                             RING_READ(read_Index,sz);
 
                         bool foundSats[32];
-
 
                         for(unsigned int i=0; i<numObs; ++i)
                         {
@@ -312,7 +322,7 @@ void messages::readAndProcess(QString inputFileName,
                         double deltaE = bestMSG.PX-sensor.getPosE();
                         double deltaF = bestMSG.PY-sensor.getPosF();
                         double deltaG = bestMSG.PZ-sensor.getPosG();
-                        double deltaRSS = sqrt(deltaE*deltaE + deltaF*deltaF + deltaG*deltaG);;
+                        double deltaRSS = sqrt(deltaE*deltaE + deltaF*deltaF + deltaG*deltaG);
 
                         //fprintf(outputFile, "Time,UTC Time,Number of GPS Satellites,E,F,G,deltaE,deltaF,deltaG,deltaRSS\r\n");
                         fprintf(outputFile, "%.6f,%.6f,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f\r\n",
@@ -344,6 +354,7 @@ void messages::readAndProcess(QString inputFileName,
                     for(int i=0; i<4; ++i)
                         RING_READ(read_Index, sz);
 
+                     printf("Size after Process: %d\r\n", sz);
                 }//while(read_Index != write_Index)
             }//if(!DONE)
 
