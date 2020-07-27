@@ -149,6 +149,9 @@ void MainWindow::on_process_Button_clicked()
                 mThread->sensor.setPos(E, F, G);
                 QString valueAsString = QString::number(E);
                 ui->endTime->setText(valueAsString);
+
+                //Start Processing Thread
+                mThread->start();
             }
             else
             {
@@ -157,6 +160,11 @@ void MainWindow::on_process_Button_clicked()
 
                 if((ui->E_Input->text() > 0) && (ui->F_Input->text() > 0) && (ui->G_Input->text() > 0))
                 {
+                    double E = ui->E_Input->text().toDouble();
+                    double F = ui->F_Input->text().toDouble();
+                    double G = ui->G_Input->text().toDouble();
+                    mThread->sensor.setPos(E, F, G);
+
                     //Start processing thread
                     mThread->start();
 
