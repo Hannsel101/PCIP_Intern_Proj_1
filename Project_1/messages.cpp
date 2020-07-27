@@ -73,8 +73,6 @@ unsigned long CalculateBlockCRC32( unsigned long ulCount, unsigned char
 void messages::readAndProcess(QString inputFileName,
                               QString outputFileName, QString logFileName, GPS_Sensor sensor)
 {
-
-
         //File pointers for input and output files
         FILE* inputFile;
         FILE* outputFile;
@@ -119,8 +117,6 @@ void messages::readAndProcess(QString inputFileName,
             //If space available for another read then read
             if(!lastRead && (sz < CHUNK_SIZE))
             {
-
-                printf("Reading Chunk\r\n");
                 for(int k=0; k<CHUNK_SIZE; ++k)
                 {
                     //Read up to 4096 bytes out of the input file stream
@@ -137,8 +133,6 @@ void messages::readAndProcess(QString inputFileName,
                         RING_WRITE(write_Index, sz);
                     }
                 }//for(int k=0; k<CHUNK_SIZE; ++k)
-
-                printf("Size !lastRead: %d\r\n", sz);
             }
             /*
              * READING DONE
@@ -204,9 +198,11 @@ void messages::readAndProcess(QString inputFileName,
                         if(lastRead)
                             DONE = true;
                         read_Index = syncPos;
+                        //**TESTING******************************************************
+                        sz += headerSize;
+                        //**TESTING******************************************************
                         break;
                     }
-
 
                     //Full size of message
                     unsigned int CRCsz = headerSize + header.Message_Length;
@@ -353,8 +349,6 @@ void messages::readAndProcess(QString inputFileName,
 
                     for(int i=0; i<4; ++i)
                         RING_READ(read_Index, sz);
-
-                     printf("Size after Process: %d\r\n", sz);
                 }//while(read_Index != write_Index)
             }//if(!DONE)
 
