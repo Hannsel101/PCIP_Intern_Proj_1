@@ -18,13 +18,16 @@ public:
     GPS_Sensor sensor;
 
 public slots:
+    void onStartTimeUpdated(double);
+    void onEndRunUpdated(double, unsigned int, double);
 
 signals:
-    void NumberChanged(int);
+    void logUpdate(unsigned int);
+    void updateStartTime(double);
+    void endRunUpdate(double, unsigned int, double);
 
 
 private:
-    int threadInt = 0;
 };
 
 

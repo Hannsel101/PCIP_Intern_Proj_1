@@ -14,15 +14,15 @@
 #define RING_READ(idx, sz) {idx++; idx &= (unsigned int)(BUFF_SIZE-1); sz--;}
 
 
-messages::messages()
+messages::messages(QObject *parent):
+QObject(parent)
 {
     utc_Offset = 0;
     gpsSats = 0;
-}
-
-messages::~messages()
-{
-
+    recordsProcessed = 0;
+    RSS_Over_half = 0;
+    startTimeGPS = -1.0;
+    endTimeGPS = -1.0;
 }
 //-----------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------//
@@ -96,13 +96,16 @@ void messages::readAndProcess(QString inputFileName,
         const char* inputName = baif.data();
         QByteArray baof = outputFileName.toLocal8Bit();
         const char* outputName = baof.data();
+        QByteArray balf = logFileName.toLocal8Bit();
+        const char* logName = balf.data();
 
         //Open input and output files
         fopen_s(&inputFile, inputName, "rb");
         fopen_s(&outputFile, outputName, "wt");
+        fopen_s(&logFile, logName, "wt");
 
         //Comma seperated for CSV file formatting
-        fprintf(outputFile, "Time,UTC Time,Number of GPS Satellites,E,F,G,deltaE,deltaF,deltaG,deltaRSS\r\n");
+        fprintf(outputFile, "Time,UTC Time,Number of GPS Satellites,E,F,G,deltaE,deltaF,deltaG,deltaRSS\n");
         fflush(outputFile);
 
 
@@ -198,9 +201,7 @@ void messages::readAndProcess(QString inputFileName,
                         if(lastRead)
                             DONE = true;
                         read_Index = syncPos;
-                        //**TESTING******************************************************
                         sz += headerSize;
-                        //**TESTING******************************************************
                         break;
                     }
 
@@ -320,8 +321,18 @@ void messages::readAndProcess(QString inputFileName,
                         double deltaG = bestMSG.PZ-sensor.getPosG();
                         double deltaRSS = sqrt(deltaE*deltaE + deltaF*deltaF + deltaG*deltaG);
 
+                        //Grab the start time
+                        if(startTimeGPS == -1.0)
+                        {
+                            startTimeGPS = header.GPSec/1000.0;
+                            emit startTimeUpdated(startTimeGPS);
+                        }
+
+                        //Grab the last time processed
+                        endTimeGPS = header.GPSec/1000.0;
+
                         //fprintf(outputFile, "Time,UTC Time,Number of GPS Satellites,E,F,G,deltaE,deltaF,deltaG,deltaRSS\r\n");
-                        fprintf(outputFile, "%.6f,%.6f,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f\r\n",
+                        fprintf(outputFile, "%.6f,%.6f,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f\n",
                                 header.GPSec/1000.0,
                                 header.GPSec/1000.0+utc_Offset,
                                 gpsSats,
@@ -337,7 +348,11 @@ void messages::readAndProcess(QString inputFileName,
                         /*
                          * End writing output records to outputfile
                          * */
-
+                        recordsProcessed++;
+                        if(deltaRSS > 0.5)
+                        {
+                            RSS_Over_half++;
+                        }
                         break;
 
 
@@ -355,9 +370,15 @@ void messages::readAndProcess(QString inputFileName,
 
         }//while(!DONE && !lastRead)
 
+        double pcnt = (RSS_Over_half/recordsProcessed)*100.0;
 
+        fprintf(logFile, "Start Time GPS: %f\nEnd Time GPS: %f\nStart Time UTC: %f\nEnd Time UTC: %f\nRecords Processed: %d\nRSS > 0.5m: %.1f%%\n",
+                startTimeGPS, endTimeGPS, startTimeGPS+utc_Offset, endTimeGPS+utc_Offset,
+                recordsProcessed, pcnt);
 
+        emit endRunUpdate(endTimeGPS, recordsProcessed, pcnt);
 
+        fclose(logFile);
         fclose(inputFile);
         fclose(outputFile);
 }
@@ -376,3 +397,7 @@ bool messages::checkIndexes(int read_Index,int write_Index, int count)
 }
 //-----------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------//
+unsigned int messages::getNumRecordsProcessed()
+{
+    return recordsProcessed;
+}

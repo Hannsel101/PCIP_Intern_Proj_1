@@ -42,10 +42,10 @@ public:
     QPushButton *process_Button;
     QFrame *line;
     QLabel *processingInformationHeader;
-    QLabel *label_2;
+    QLabel *startTime;
     QLabel *endTime;
     QLabel *recordsProcessed;
-    QLabel *label;
+    QLabel *percentRSS;
     QFrame *line_2;
     QLabel *log_Label;
     QLineEdit *Input_LineEdit;
@@ -178,11 +178,11 @@ public:
 
         verticalLayout_2->addWidget(processingInformationHeader);
 
-        label_2 = new QLabel(centralwidget);
-        label_2->setObjectName(QString::fromUtf8("label_2"));
-        label_2->setFont(font1);
+        startTime = new QLabel(centralwidget);
+        startTime->setObjectName(QString::fromUtf8("startTime"));
+        startTime->setFont(font1);
 
-        verticalLayout_2->addWidget(label_2);
+        verticalLayout_2->addWidget(startTime);
 
         endTime = new QLabel(centralwidget);
         endTime->setObjectName(QString::fromUtf8("endTime"));
@@ -196,11 +196,11 @@ public:
 
         verticalLayout_2->addWidget(recordsProcessed);
 
-        label = new QLabel(centralwidget);
-        label->setObjectName(QString::fromUtf8("label"));
-        label->setFont(font1);
+        percentRSS = new QLabel(centralwidget);
+        percentRSS->setObjectName(QString::fromUtf8("percentRSS"));
+        percentRSS->setFont(font1);
 
-        verticalLayout_2->addWidget(label);
+        verticalLayout_2->addWidget(percentRSS);
 
         line_2 = new QFrame(centralwidget);
         line_2->setObjectName(QString::fromUtf8("line_2"));
@@ -296,10 +296,10 @@ public:
         antennaPosition_Button->setText(QCoreApplication::translate("MainWindow", "Load Position", nullptr));
         process_Button->setText(QCoreApplication::translate("MainWindow", "Start Processing", nullptr));
         processingInformationHeader->setText(QCoreApplication::translate("MainWindow", "Processing Information", nullptr));
-        label_2->setText(QCoreApplication::translate("MainWindow", "Start Time:", nullptr));
+        startTime->setText(QCoreApplication::translate("MainWindow", "Start Time:", nullptr));
         endTime->setText(QCoreApplication::translate("MainWindow", "End Time: ", nullptr));
         recordsProcessed->setText(QCoreApplication::translate("MainWindow", "Records Processed: ", nullptr));
-        label->setText(QCoreApplication::translate("MainWindow", "% Records with RSS over 0.5m: ", nullptr));
+        percentRSS->setText(QCoreApplication::translate("MainWindow", "% Records with RSS over 0.5m: ", nullptr));
         log_Label->setText(QCoreApplication::translate("MainWindow", "Log File", nullptr));
         Input_LineEdit->setInputMask(QString());
         Input_LineEdit->setText(QString());

@@ -58,8 +58,13 @@ private:
      * fileType = the extension for the newly generated file
      * */
 
+    void setFormEnable(bool enable);
+
 public slots:
     void onNumberChanged(int);
+    void onLogUpdate(unsigned int);
+    void onStartTimeUpdated(double);
+    void onEndRunUpdated(double, unsigned int, double);
 
 private slots:
     void on_InputSearch_Button_clicked();

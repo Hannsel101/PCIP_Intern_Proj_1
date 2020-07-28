@@ -9,7 +9,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     //Setup extra Thread
     mThread = new myThread(this);
-    //connect(mThread, SIGNAL(NumberChanged(int)), this, SLOT(onNumberChanged(int)));
+    connect(mThread, SIGNAL(updateStartTime(double)), this, SLOT(onStartTimeUpdated(double)));
+    connect(mThread, SIGNAL(endRunUpdate(double, unsigned int, double)), this, SLOT(onEndRunUpdated(double, unsigned int, double)));
+    //connect(mThread, SIGNAL(logUpdate(unsigned int)), this, SLOT(onLogUpdate(unsigned int)));
+
 
     //Setting up the folder images for file search buttons
     QPixmap folderPixmap(":/images/images/folder.png");
@@ -129,48 +132,33 @@ void MainWindow::on_process_Button_clicked()
             checkOutputFile();
             checkLogFile();
 
-            //For Debugging**************************************
-            //****************************************************
             mThread->InputFileName = inputFileName;
             mThread->OutputFileName = outputFileName;
             mThread->LogFileName = logFileName;
 
-
-            //messages mes1;
-            //mes1.readAndProcess(inputFileName, outputFileName, logFileName);
-            //For Debugging**************************************
-            //****************************************************
-
-            if((ui->E_Input->text() > 0) && (ui->F_Input->text() > 0) && (ui->G_Input->text() > 0))
-            {
-                double E = ui->E_Input->text().toDouble();
-                double F = ui->F_Input->text().toDouble();
-                double G = ui->G_Input->text().toDouble();
-                mThread->sensor.setPos(E, F, G);
-                QString valueAsString = QString::number(E);
-                ui->endTime->setText(valueAsString);
-
-                //Start Processing Thread
-                mThread->start();
-            }
-            else
+            //Check if antenna position is valid
+            if((ui->E_Input->text() == 0) || (ui->F_Input->text() == 0) || (ui->G_Input->text() == 0))
             {
                 //Prompt the user to select an input file
                 MainWindow::on_antennaPosition_Button_clicked();
 
-                if((ui->E_Input->text() > 0) && (ui->F_Input->text() > 0) && (ui->G_Input->text() > 0))
+                //Validate entered antenna position
+                if((ui->E_Input->text() == 0) || (ui->F_Input->text() == 0) || (ui->G_Input->text() == 0))
                 {
-                    double E = ui->E_Input->text().toDouble();
-                    double F = ui->F_Input->text().toDouble();
-                    double G = ui->G_Input->text().toDouble();
-                    mThread->sensor.setPos(E, F, G);
-
-                    //Start processing thread
-                    mThread->start();
-
-                    //Update GUI
+                    QMessageBox::warning(this, "Invalid Antenna Position", "Please input E, F, and G coordinates");
+                    return;
                 }
             }
+
+
+            double E = ui->E_Input->text().toDouble();
+            double F = ui->F_Input->text().toDouble();
+            double G = ui->G_Input->text().toDouble();
+            mThread->sensor.setPos(E, F, G);
+
+            setFormEnable(false);
+            //Start Processing Thread
+            mThread->start();
         }
     }
     else
@@ -280,13 +268,13 @@ void MainWindow::on_antennaPosition_Button_clicked()
 
             //Update the text entry fields corresponding with ECEF(E, F, G) coordinates
             //to show the extracted comma seperated values
-            QString conversion = QString::number(sensor.getPosE());
+            QString conversion = QString::number(sensor.getPosE(), 'f', 10);
             ui->E_Input->setText(conversion);
 
-            conversion = QString::number(sensor.getPosF());
+            conversion = QString::number(sensor.getPosF(), 'f', 10);
             ui->F_Input->setText(conversion);
 
-            conversion = QString::number(sensor.getPosG());
+            conversion = QString::number(sensor.getPosG(), 'f', 10);
             ui->G_Input->setText(conversion);
         }
         else
@@ -305,4 +293,46 @@ void MainWindow::onNumberChanged(int number)
 {
     ui->endTime->setText(QString::number(number));
 }
+//-----------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------//
+void MainWindow::onLogUpdate(unsigned int recordsProcessed)
+{
+    QString update = "Records Processed: " + QString::number(recordsProcessed);
+    ui->recordsProcessed->setText(update);
+}
+//-----------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------//
+void MainWindow::onStartTimeUpdated(double startTime)
+{
+    QString update = "Start Time GPS: " + QString::number(startTime, 'f', 1);
+    ui->startTime->setText(update);
+}
 
+void MainWindow::onEndRunUpdated(double endTime, unsigned int recordsProcessed, double pcnt)
+{
+    QString update = "End Time: " + QString::number(endTime, 'f', 1);
+    ui->endTime->setText(update);
+
+    update = "Records Processed: " + QString::number(recordsProcessed);
+    ui->recordsProcessed->setText(update);
+
+    update = "% RSS > 0.5m: " + QString::number(pcnt, 'f', 1);
+    ui->percentRSS->setText(update);
+
+    setFormEnable(true);
+}
+
+void MainWindow::setFormEnable(bool enable)
+{
+    ui->Input_LineEdit->setEnabled(enable);
+    ui->output_LineEdit->setEnabled(enable);
+    ui->log_LineEdit->setEnabled(enable);
+    ui->E_Input->setEnabled(enable);
+    ui->F_Input->setEnabled(enable);
+    ui->G_Input->setEnabled(enable);
+    ui->process_Button->setEnabled(enable);
+    ui->InputSearch_Button->setEnabled(enable);
+    ui->OutputSearch_Button->setEnabled(enable);
+    ui->LogSearch_Button->setEnabled(enable);
+    ui->antennaPosition_Button->setEnabled(enable);
+}
