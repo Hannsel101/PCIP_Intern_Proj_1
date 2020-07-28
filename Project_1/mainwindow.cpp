@@ -129,8 +129,10 @@ void MainWindow::on_process_Button_clicked()
 
             //Update the GUI and check for the output and log file text entry fields
             ui->Input_LineEdit->setStyleSheet("border: 1px solid green");
-            checkOutputFile();
-            checkLogFile();
+            if(!checkOutputFile())
+                return;
+            if(!checkLogFile())
+                return;
 
             mThread->InputFileName = inputFileName;
             mThread->OutputFileName = outputFileName;
@@ -170,13 +172,15 @@ void MainWindow::on_process_Button_clicked()
 }
 //-----------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------//
-void MainWindow::checkOutputFile()
+bool MainWindow::checkOutputFile()
 {
+    bool status = false;
     //Check if an output file has been specified or will be generated based on input
     if(outputFileName.length() > 0)
     {
-        outputFile = new QFile(outputFileName);
-        if(!checkPermissions(outputFile, 1))
+        QFile* outputFile = new QFile(outputFileName);
+
+        if(!outputFile->exists() || !checkPermissions(outputFile, 1))
         {
             QMessageBox::warning(this, "Permissions Error", "Please select a different output file");
             ui->output_LineEdit->setStyleSheet("border: 1px solid red");
@@ -184,6 +188,7 @@ void MainWindow::checkOutputFile()
         else
         {
             ui->output_LineEdit->setStyleSheet("border: 1px solid green");
+            status = true;
         }
     }
     else//Generate an output file based on input
@@ -200,18 +205,27 @@ void MainWindow::checkOutputFile()
         //outputFile->open(QIODevice::WriteOnly);
         ui->output_LineEdit->setText(outputFileName);
         ui->output_LineEdit->setStyleSheet("border: 1px solid green");
+        status = true;
     }
+
+    if(outputFile != nullptr)
+    {
+        outputFile->close();
+        outputFile = nullptr;
+    }
+    return status;
 }
 //-----------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------//
-void MainWindow::checkLogFile()
+bool MainWindow::checkLogFile()
 {
+    bool status = false;
     //Check if a log file has been selected
     if(logFileName.length() > 0)
     {
         logFile = new QFile(logFileName);
 
-        if(!checkPermissions(logFile,1))//Check the permissions of the selected log file
+        if(!logFile->exists() || !checkPermissions(logFile,1))//Check the permissions of the selected log file
         {
             QMessageBox::warning(this, "Permissions Error", "Please select a different log file");
             ui->log_LineEdit->setStyleSheet("border: 1px solid red");
@@ -219,6 +233,7 @@ void MainWindow::checkLogFile()
         else
         {
             ui->log_LineEdit->setStyleSheet("border: 1px solid green");
+            status = true;
         }
     }
     else//Generate a log file based on input file name
@@ -233,7 +248,15 @@ void MainWindow::checkLogFile()
 
         ui->log_LineEdit->setText(logFileName);
         ui->log_LineEdit->setStyleSheet("border: 1px solid green");
+        status = true;
     }//End Generate log file
+
+    if(logFile != nullptr)
+    {
+        logFile->close();
+        logFile = nullptr;
+    }
+    return status;
 }
 //-----------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------//
@@ -264,6 +287,13 @@ void MainWindow::on_antennaPosition_Button_clicked()
         {
             //Split the input from the position file into three comma seperated numbers
             QStringList line = sensor.getDebug().split(',');
+
+            if(line.size() < 3)
+            {
+                QMessageBox::warning(this, "Antennal Load Position Error", "Invalid File Selected");
+                return;
+            }
+
             sensor.setPos(line[0].toDouble(), line[1].toDouble(), line[2].toDouble());
 
             //Update the text entry fields corresponding with ECEF(E, F, G) coordinates

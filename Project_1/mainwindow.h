@@ -38,8 +38,8 @@ private:
      *            for output files.
      * */
 
-    void checkOutputFile();
-    void checkLogFile();
+    bool checkOutputFile();
+    bool checkLogFile();
     /*
      * The check""File() functions run through a series of checks to
      * ensure that a suitable input/output/log file has been selected.
