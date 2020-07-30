@@ -299,7 +299,7 @@ public:
         startTime->setText(QCoreApplication::translate("MainWindow", "Start Time:", nullptr));
         endTime->setText(QCoreApplication::translate("MainWindow", "End Time: ", nullptr));
         recordsProcessed->setText(QCoreApplication::translate("MainWindow", "Records Processed: ", nullptr));
-        percentRSS->setText(QCoreApplication::translate("MainWindow", "% Records with RSS over 0.5m: ", nullptr));
+        percentRSS->setText(QCoreApplication::translate("MainWindow", "% RSS > 0.5m: ", nullptr));
         log_Label->setText(QCoreApplication::translate("MainWindow", "Log File", nullptr));
         Input_LineEdit->setInputMask(QString());
         Input_LineEdit->setText(QString());

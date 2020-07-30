@@ -298,7 +298,7 @@
          </font>
         </property>
         <property name="text">
-         <string>% Records with RSS over 0.5m: </string>
+         <string>% RSS &gt; 0.5m: </string>
         </property>
        </widget>
       </item>
