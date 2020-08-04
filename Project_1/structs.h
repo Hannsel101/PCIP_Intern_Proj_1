@@ -16,11 +16,10 @@ struct NovaHeader
     unsigned char Idle_Time;
     unsigned char Time_Status;
     unsigned short Week;
-    unsigned int GPSec;//Possibly not right size
+    unsigned int GPSec;
     unsigned long Receiver_Status;
     unsigned short Reserved;
     unsigned short Receiver_SW_Version;
-    //string Response;
 };
 
 //Structure to handle the BestXYZ message formats
