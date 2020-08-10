@@ -12,11 +12,6 @@ int main(int argc, char *argv[])
     w.setWindowTitle("BestXYZ Processor");
 
 
-    // Threading setup
-    //myThread mThread;
-    //mThread.start(QThread::NormalPriority);
-
-
     w.show();
     return a.exec();
 }
